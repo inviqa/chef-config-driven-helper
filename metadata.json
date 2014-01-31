@@ -1,0 +1,39 @@
+{
+  "name": "apache-sites",
+  "version": "1.0.0",
+  "description": "Propagates sites from node config to web_app",
+  "long_description": "",
+  "maintainer": "Inviqa",
+  "maintainer_email": "msimons@inviqa.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "debian": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "scientific": ">= 0.0.0",
+    "amazon": ">= 0.0.0",
+    "windows": ">= 0.0.0"
+  },
+  "dependencies": {
+    "apache2": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "apache-sites": "Propagates sites from node config to web_app"
+  }
+}
