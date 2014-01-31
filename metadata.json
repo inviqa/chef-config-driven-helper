@@ -1,7 +1,7 @@
 {
-  "name": "apache-sites",
+  "name": "config-driven-helper",
   "version": "1.0.0",
-  "description": "Propagates sites from node config to web_app",
+  "description": "Enable driving cookbooks that are not normally config driven to be so",
   "long_description": "",
   "maintainer": "Inviqa",
   "maintainer_email": "msimons@inviqa.com",
@@ -34,6 +34,7 @@
   "groupings": {
   },
   "recipes": {
-    "apache-sites": "Propagates sites from node config to web_app"
+    "config-drive-helper::apache-sites": "Propagates sites from node config to web_app",
+    "config-drive-helper::nginx-sites": "Propagates sites from node config to nginx site"
   }
 }

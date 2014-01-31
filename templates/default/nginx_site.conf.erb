@@ -1,0 +1,41 @@
+server {
+    listen <%= @params['insecure_port'] %>;
+
+    root <%= @params['docroot']%>;
+    index index.html;
+
+    <% if @params['ssl'] %>
+
+    listen <%= @params['secure_port'] %> ssl;
+    ssl_certificate     <%= @params['ssl_cert'] %>;
+    ssl_certificate_key <%= @params['ssl_key'] %>;
+    ssl_session_timeout 7m;
+    ## Specify your SSL options here
+    ssl_protocols SSLv2 SSLv3 TLSv1;
+    ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+    ssl_prefer_server_ciphers on;
+
+    <% end %>
+
+    server_name <%= [ 'localhost', @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
+
+    location / {
+        try_files $uri @rewriteapp;
+    }
+
+    location @rewriteapp {
+        rewrite ^(.*)$ /<%= @params['endpoint'] %>/$1 last;
+    }
+
+    location ~ \.php {
+        fastcgi_pass <%= @params['php_fpm_host'] %>:<%= @params['php_fpm_port'] %>;
+
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param HTTPS off;
+    }
+
+    error_log /var/log/nginx/<%= @params['server_name'] %>_error.log;
+    access_log /var/log/nginx/<%= @params['server_name'] %>_access.log;
+}
