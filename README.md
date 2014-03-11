@@ -6,3 +6,5 @@ There are recipes for the following:
 
 - apache sites
 - nginx sites
+- mysql users
+- mysql databases
