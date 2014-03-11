@@ -12,3 +12,9 @@ default['nginx-sites']['cookbook'] = 'config-driven-helper'
 default['apache-sites'] = default['nginx-sites'].dup
 default['apache-sites']['template'] = 'web_app.conf.erb'
 default['apache-sites']['cookbook'] = 'apache2'
+
+default['mysql']['connections']['default'] = {
+  :username => "root",
+  :password => node["mysql"]["server_root_password"],
+  :host => "localhost"
+}
