@@ -16,6 +16,7 @@ if node["mysql"] && node["mysql"]["users"]
       end
 
       connection connection_details
+      action details["action"] || :grant
 
       details.each do |key, value|
         next if key.to_s == "connection"

@@ -1,6 +1,6 @@
 {
   "name": "config-driven-helper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Enable driving cookbooks that are not normally config driven to be so",
   "long_description": "",
   "maintainer": "Inviqa",
@@ -17,7 +17,7 @@
     "windows": ">= 0.0.0"
   },
   "dependencies": {
-    "apache2": ">= 0.0.0"
+    "apache2": ">= 0.0.0",
     "database": "~> 2.0.0"
   },
   "recommendations": {
@@ -38,6 +38,7 @@
     "config-driven-helper::apache-sites": "Propagates sites from node config to web_app",
     "config-driven-helper::nginx-sites": "Propagates sites from node config to nginx site",
     "config-driven-helper::mysql-users": "Creates mysql users using database cookbook",
-    "config-driven-helper::mysql-databases": "Creates mysql databases using database cookbook"
+    "config-driven-helper::mysql-databases": "Creates mysql databases using database cookbook",
+    "config-driven-helper::packages": "Installs packages"
   }
 }
