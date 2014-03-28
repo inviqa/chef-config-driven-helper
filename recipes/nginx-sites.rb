@@ -24,10 +24,6 @@ if node["nginx"] && node["nginx"]["sites"]
     action :delete
   end unless node["nginx"]["default_site_enabled"]
 
-  service "php-fpm" do
-    action [:enable, :start]
-  end
-
   service "nginx" do
     action :reload
   end
