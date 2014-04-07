@@ -16,6 +16,11 @@ server {
     ssl_prefer_server_ciphers on;
 
     <% end %>
+    <% if @params['server_params'] %>
+        <% @params['server_params'].each do |key, value| %>
+    <%= key %> <%= value %>;
+        <% end %>
+    <% end %>
 
     server_name <%= [ 'localhost', @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
