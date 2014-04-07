@@ -1,6 +1,6 @@
 {
   "name": "config-driven-helper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Enable driving cookbooks that are not normally config driven to be so",
   "long_description": "",
   "maintainer": "Inviqa",
