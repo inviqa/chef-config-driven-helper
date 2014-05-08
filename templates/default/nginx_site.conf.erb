@@ -25,12 +25,16 @@ server {
     server_name <%= [ 'localhost', @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
     location / {
+        <% if @params['endpoint'] and not @params['endpoint'].empty? %>
         try_files $uri @rewriteapp;
+        <% end %>
     }
 
+    <% if @params['endpoint'] and not @params['endpoint'].empty? %>
     location @rewriteapp {
         rewrite ^(.*)$ /<%= @params['endpoint'] %>/$1 last;
     }
+    <% end %>
 
     location ~ \.php {
         fastcgi_pass <%= @params['php_fpm_host'] %>:<%= @params['php_fpm_port'] %>;
