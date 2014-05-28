@@ -26,15 +26,18 @@ server {
 
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>
-        try_files $uri @rewriteapp;
+            <% if @params['endpoint'].end_with? ".html" %>
+                try_files $uri <%= @params['endpoint'] %>;
+            <% else %>
+                try_files $uri @rewriteapp;
+            <% end %>
         <% end %>
     }
 
-    <% if @params['endpoint'] and not @params['endpoint'].empty? %>
+    <% if @params['php_support'] %>
     location @rewriteapp {
         rewrite ^(.*)$ /<%= @params['endpoint'] %>/$1 last;
     }
-    <% end %>
 
     location ~ \.php {
         fastcgi_pass <%= @params['php_fpm_host'] %>:<%= @params['php_fpm_port'] %>;
@@ -44,6 +47,7 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param HTTPS off;
     }
+    <% end %>
 
     error_log /var/log/nginx/<%= @params['server_name'] %>_error.log;
     access_log /var/log/nginx/<%= @params['server_name'] %>_access.log;
