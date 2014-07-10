@@ -6,8 +6,17 @@ default['nginx-sites']['php_fpm_host'] = '127.0.0.1'
 default['nginx-sites']['ssl'] = false
 default['nginx-sites']['ssl_cert'] = '/etc/ssl/cert.pem'
 default['nginx-sites']['ssl_key'] = '/etc/ssl/key.pem'
+default['nginx-sites']['ssl'] = {
+  'certfile' => default['nginx-sites']['ssl_cert'],
+  'keyfile' => default['nginx-sites']['ssl_key'],
+  'cacertfile' => nil,
+  'certchainfile' => nil,
+  'protocols' => "All -SSLv2 -SSLv3", # TLS1, 1.1 & 1.2 compatible with if OpenSSL < 1.0.1
+  'ciphersuite' => "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;"
+}
 default['nginx-sites']['template'] = 'nginx_site.conf.erb'
 default['nginx-sites']['cookbook'] = 'config-driven-helper'
+default['nginx-sites']['protocol'] = ['http']
 
 default['apache-sites'] = default['nginx-sites'].dup
 default['apache-sites']['template'] = 'web_app.conf.erb'
