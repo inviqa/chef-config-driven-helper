@@ -1,5 +1,9 @@
 if node["mysql"] && node["mysql"]["databases"]
-  include_recipe "database::mysql"
+  gem_package "mysql" do
+    gem_binary nil
+    action :nothing
+    subscribes :install, "service[mysql]", :delayed
+  end
 
   node["mysql"]["databases"].each do |name, details|
     mysql_database name do
@@ -10,12 +14,14 @@ if node["mysql"] && node["mysql"]["databases"]
       end
 
       if connection_name
-        connection_details = node["mysql"]["connections"][connection_name]
+        connection_details = lazy { node["mysql"]["connections"][connection_name] }
       else
-        connection_details = details["connection"]
+        connection_details = lazy { details["connection"] }
       end
 
       connection connection_details
+
+      subscribes :create, "gem_package[mysql]", :immediately
 
       details.each do |key, value|
         next if key.to_s == "connection"
