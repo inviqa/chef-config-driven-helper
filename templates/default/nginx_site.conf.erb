@@ -1,18 +1,18 @@
 server {
+    <% if @params['protocols'].include? 'http' %>
     listen <%= @params['insecure_port'] %>;
+    <% end %>
 
     root <%= @params['docroot']%>;
     index index.html;
 
-    <% if @params['ssl'] %>
-
+    <% if @params['protocols'].include? 'https' %>
     listen <%= @params['secure_port'] %> ssl;
-    ssl_certificate     <%= @params['ssl_cert'] %>;
-    ssl_certificate_key <%= @params['ssl_key'] %>;
+    ssl_certificate     <%= @params['ssl']['certfile'] %>;
+    ssl_certificate_key <%= @params['ssl']['keyfile'] %>;
     ssl_session_timeout 7m;
-    ## Specify your SSL options here
-    ssl_protocols SSLv2 SSLv3 TLSv1;
-    ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+    ssl_protocols <%= @params['ssl']['protocols'] %>;
+    ssl_ciphers <%= @params['ssl']['ciphersuite'] %>
     ssl_prefer_server_ciphers on;
 
     <% end %>
@@ -40,15 +40,26 @@ server {
     }
 
     location ~ \.php {
-        fastcgi_pass <%= @params['php_fpm_host'] %>:<%= @params['php_fpm_port'] %>;
-
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
+
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param HTTPS off;
+        fastcgi_param HTTPS $https;
+
+        fastcgi_pass <%= @params['php-fpm']['listen'] == "socket" ? "unix:#{@params['php-fpm']['socket']}" : "#{@params['php-fpm']['host']}:#{@params['php-fpm']['port']}" %>;
     }
     <% end %>
 
     error_log /var/log/nginx/<%= @params['server_name'] %>_error.log;
     access_log /var/log/nginx/<%= @params['server_name'] %>_access.log;
+
+    <% (@params['restricted_dirs'] || []).each do |dir| %>
+    location <%= dir %> { deny all; }
+    <% end %>
+
+    <% (@params['includes'] || []).each do |file| %>
+    include <%= file %>;
+    <% end %>
 }

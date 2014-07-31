@@ -22,3 +22,69 @@ suites:
         mysqld:
           - disable
           - start
+
+  - name: nginx-sites-minimal
+    run_list:
+      - recipe[nginx]
+      - recipe[nginx-test::https]
+      - recipe[php-fpm]
+      - recipe[nginx-test::docroot]
+      - recipe[config-driven-helper::nginx-sites]
+    attributes:
+      php-fpm:
+        user: nginx
+        group: nginx
+      nginx:
+        sites:
+          site1:
+            server_name: "test.dev"
+            docroot: "/docroot"
+
+  - name: nginx-sites-ssl
+    run_list:
+      - recipe[nginx]
+      - recipe[nginx-test::https]
+      - recipe[php-fpm]
+      - recipe[nginx-test::docroot]
+      - recipe[config-driven-helper::nginx-sites]
+    attributes:
+      ssl_certs:
+        /etc/ssl/cert.pem: "-----BEGIN CERTIFICATE-----\nMIIEVDCCAzygAwIBAgIBADANBgkqhkiG9w0BAQUFADB9MQswCQYDVQQGEwJVSzEJ\nMAcGA1UECAwAMQ8wDQYDVQQKDAZJbnZpcWExDzANBgNVBAcMBkxvbmRvbjETMBEG\nA1UEAwwKKi50ZXN0LmRldjEJMAcGA1UECwwAMSEwHwYJKoZIhvcNAQkBFhJzdXBw\nb3J0QGludmlxYS5jb20wHhcNMTQwNzMwMTIyODM3WhcNMTUwNzMwMTIyODM3WjB9\nMQswCQYDVQQGEwJVSzEJMAcGA1UECAwAMQ8wDQYDVQQKDAZJbnZpcWExDzANBgNV\nBAcMBkxvbmRvbjETMBEGA1UEAwwKKi50ZXN0LmRldjEJMAcGA1UECwwAMSEwHwYJ\nKoZIhvcNAQkBFhJzdXBwb3J0QGludmlxYS5jb20wggEiMA0GCSqGSIb3DQEBAQUA\nA4IBDwAwggEKAoIBAQCgMJYuUqFNIOn8TB+RINk0zTtjyEzDWrG4VSPsaAJC2kRH\nXIy74njGdAXU0FLiKuNK/N0b0f6K+M+Y+suWHlfQztVfE31lfh6pygZWoT0fe5Vw\nUQA8AvUXBeXRcRFq9mEqOWXdyp0nBrG90R/ZFmOlTlFy2UXDZ7LvocIbRY7MWerV\nUC24dDivCVmYmqBa3ocI5iF2vVRA1QrwMrqu+TvFoIqyHTpbs+hoZPnDBAUChlee\np0KKeFg2iIKqC0/lXoZuH3Bvtnbnquk1yHP0OKKWjH8EF197ky3zzVIWVECwven6\nI4N5j1ncUUyeLZIgdbSR1kUjQ4Qxirwu91nX1TXHAgMBAAGjgd4wgdswDwYDVR0T\nAQH/BAUwAwEB/zAdBgNVHQ4EFgQUbn1Z0oKa+OMJ3xuSt2L8SlPK/00wgagGA1Ud\nIwSBoDCBnYAUbn1Z0oKa+OMJ3xuSt2L8SlPK/02hgYGkfzB9MQswCQYDVQQGEwJV\nSzEJMAcGA1UECAwAMQ8wDQYDVQQKDAZJbnZpcWExDzANBgNVBAcMBkxvbmRvbjET\nMBEGA1UEAwwKKi50ZXN0LmRldjEJMAcGA1UECwwAMSEwHwYJKoZIhvcNAQkBFhJz\ndXBwb3J0QGludmlxYS5jb22CAQAwDQYJKoZIhvcNAQEFBQADggEBAGqG71n5EvUt\nnxdTRP6K0J/g0gny0C19J98aQbGK5zK1WXjJaOQ9n49GQz8lkQH86HCLUy0FPHjZ\nGue2bmrxyyVvFFUbhrL9vQzjy/SqCc2YFeTrd0OgExhql21j3OhnYQxEwQYM6un9\nYn/yXSKf9JIvFaZHIfe6IFkyLKwzLzF5Q5ARGsPJXpguGa91BZ5dn4u5CSg1xtoB\nf5NlsWApAbC8s/vwFJT5yj1QTpFaMO9n8PxoyWIlXk61uEo1yyh4IsmUTJlXRoh6\nBY6qnmw3/JQYIC4I6EBIlFYsbcZGjnXsrGvSJkQw6kqUe0ywHQ9LKdAkoTBVaNCI\n+7ng1/Ogrq0=\n-----END CERTIFICATE-----\n"
+        /etc/ssl/key.pem: "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAoDCWLlKhTSDp/EwfkSDZNM07Y8hMw1qxuFUj7GgCQtpER1yM\nu+J4xnQF1NBS4irjSvzdG9H+ivjPmPrLlh5X0M7VXxN9ZX4eqcoGVqE9H3uVcFEA\nPAL1FwXl0XERavZhKjll3cqdJwaxvdEf2RZjpU5RctlFw2ey76HCG0WOzFnq1VAt\nuHQ4rwlZmJqgWt6HCOYhdr1UQNUK8DK6rvk7xaCKsh06W7PoaGT5wwQFAoZXnqdC\ninhYNoiCqgtP5V6Gbh9wb7Z256rpNchz9Diilox/BBdfe5Mt881SFlRAsL3p+iOD\neY9Z3FFMni2SIHW0kdZFI0OEMYq8LvdZ19U1xwIDAQABAoIBAASG2vecJirDz1jt\n3caAIyM22YLMWj77BSKsZUN8/PNer6dEmkWE9NzG0pNc/7qcc6fe1XC/0m2i8lrk\nW3R2jwy7i5QQPO7tTXiG2P8Bt3R4TZTK9TK88qgf5oqwo0lehQhobtSBsUc1DTjL\n/BZqZ454VBzmvu3ytD/JVm7m3E4yANrVxXKWLVTeAvjqN9iMIezcA/BCx07jZ83c\n7kpWwYOAb+UWCx5XYt+EfQQIz9JERqIP9/DRHKQ4MH0GXi/9r/AtgPnl4pPbDbph\nNFlTBVYZOj66N8yWTr0mUe3WOAspVUgOAOkuf9YuiyKA8theJ5HFlNJPx4b+BUug\n5GpULIECgYEAy2T9G7VvcDEbbfCQYJ/+dcq8C7gwckAL3NmkquTQfHFnOC9Iu1KB\ndfFLbQaDwHFzGfjSkPrOtlaJfQyjSlpChPENXU5i9rkdL1ERgCsyqAd3iFCtEJcg\nT+81vbmGh+/GOKdS3AgNazjOgaWvS+HfdB+YYbRBw6nbeYp3hti3sJcCgYEAyZ71\nlql/irKME51evWmZgVj9MD8BDgGEPw2bT3nXfThO+CzcNXHnorhuoAQgoiMIDuEv\npddlbA7hEQ7pg0g5UfTan6dKCRB4fxYSW+/Qh/NbsHyc08HgcBAOlXJYy+o+9SPq\ngfUu2qO8HTXa+lAkXBorSKHKwlvKUDzNOfJRGlECgYBf1hXtGHCJzJnAE7nzzW94\n0S4J15/8NXFhfqu4WlhiSoz4TE9Y9GdLy4ZeuNMbulkhw7xz07nS8LOX2HyYbC8r\ntOk3LdgzqMW3pds5KSGVSu9nq5vgVVVEVNJdsy1QoAomZ7EDPEgWXY3wSMFwX92K\nOdjzMJxMNZzUiAoJ39OtwQKBgA+kys9m1WOQmPfIpRozQFrd6b89lDpe+cDesGdJ\nP+QSY2Y0LN3kuaFRiBvYViPebfihlk3a2Z65xNLLAmlSSEhIpFHw6/iqE39g2gnS\nIK77veiCsrRnfZ+UT11fIu6nfT0ODVsKCBmkzKrDi/sSDtAqo6MeEppj/t2c6huN\n5qcRAoGAXLzx25ydPKmKaGecuV8wl0XT7Dd9/NkMb930k70ECMAujnJnlT6q6xW4\nPX3IAbetwhRmm1G4828qkKzjiZHzCZB7xy1R+t9xQ9g8Mz2rlOzxRW5UJvHqgfxq\n3Fjyapt3GG0fLhfFOLSzhPo2CsPSyFYLMvV6Z0k3OW/n64suo1s=\n-----END RSA PRIVATE KEY-----"
+      php-fpm:
+        user: nginx
+        group: nginx
+      nginx:
+        sites:
+          site1:
+            server_name: "test.dev"
+            docroot: "/docroot"
+            protocols: ["https"]
+
+  - name: nginx-sites-advanced
+    run_list:
+      - recipe[nginx]
+      - recipe[nginx-test::https]
+      - recipe[php-fpm]
+      - recipe[nginx-test::docroot]
+      - recipe[config-driven-helper::nginx-sites]
+    attributes:
+      php-fpm:
+        user: nginx
+        group: nginx
+      nginx:
+        sites:
+          site1:
+            server_name: "test.dev"
+            server_aliases: [ "test1.dev", "test2.dev" ]
+            docroot: "/docroot"
+            server_params: 
+              "set $php_value": "\"cgi.fix_pathinfo = 0\""
+            includes:
+              test: conf/test.conf
+            restricted_dirs:
+              media: /media
+             
+         
+
+
