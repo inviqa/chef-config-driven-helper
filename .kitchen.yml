@@ -1,0 +1,24 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos-6.4
+
+suites:
+  - name: services
+    run_list:
+      - recipe[nginx]
+      - recipe[config-driven-helper::services]
+      - recipe[mysql::server]
+    attributes:
+      services:
+        nginx:
+          - disable
+          - stop
+        mysqld:
+          - disable
+          - start
