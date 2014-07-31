@@ -1,0 +1,166 @@
+<% if @params[:protocol] == 'https' %>
+<VirtualHost <%= @params[:secure_ip] || '*' %>:<%= @params[:secure_port] %>>
+  SSLEngine on
+  SSLCertificateKeyFile <%= @params[:ssl][:keyfile] %>
+  SSLCertificateFile <%= @params[:ssl][:certfile] %>
+  <%= "SSLCACertificateFile #{@params[:ssl][:cacertfile]}" if defined?(@params[:ssl][:cacertfile]) and !@params[:ssl][:cacertfile].nil? %>
+  <%= "SSLCertificateChainFile #{@params[:ssl][:certchainfile]}" if defined?(@params[:ssl][:certchainfile]) and !@params[:ssl][:certchainfile].nil? %>
+  SSLProtocol <%= @params[:ssl][:protocols] %>
+  SSLCipherSuite <%= @params[:ssl][:ciphersuite] %>
+<% else %>
+<VirtualHost *:<%= @params[:insecure_port] %>>
+<% end %>
+
+  ServerName <%= @params[:server_name] %>
+  <% "ServerAlias #{@params[:server_aliases].join(" ")}" if @params[:server_aliases] and !@params[:server_aliases].empty? %>
+
+  DocumentRoot <%= @params[:docroot] %>
+
+  LogLevel info
+  ErrorLog <%= @params[:server_name] %>-error.log
+  CustomLog <%= @params[:server_name] %>-access.log combined
+
+  ServerSignature Off
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+
+    EnableMMAP <%= @params[:enable_mmap] || 'On' %>
+    EnableSendfile <%= @params[:enable_sendfile] || 'On' %>
+
+<% if @params[:basic_username] %>
+    <%= "Satisfy Any" if @params[:allow_from] %>
+    AuthUserFile <%= @params[:docroot] %>/.htpasswd
+    AuthType Basic
+    AuthName "Protected System"
+    Require valid-user
+
+    SetEnvIf Request_URI ^/LICENSE.txt$ noauth=1
+    Allow from env=noauth
+<% end  %>
+
+    AllowOverride <%= @params[:parse_htaccess] ? "All" : "None" %>
+
+    Order allow,deny
+<%= @params[:allow_from] ? @params[:allow_from].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
+
+    DirectoryIndex index.php
+
+    <IfModule mod_security.c>
+        ###########################################
+        # disable POST processing to not break multiple image upload
+
+        SecFilterEngine Off
+        SecFilterScanPOST Off
+    </IfModule>
+
+    <IfModule mod_deflate.c>
+
+        ############################################
+        ## enable apache served files compression
+        ## http'//developer.yahoo.com/performance/rules.html#gzip'
+
+        # Insert filter on all content
+        ###SetOutputFilter DEFLATE
+        # Insert filter on selected content types only
+        AddOutputFilterByType DEFLATE text/css application/x-javascript text/javascript text/x-component text/html text/richtext image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon
+        #
+        # Netscape 4.x has some problems...
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+        # Netscape 4.06-4.08 have some more problems
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+        # MSIE masquerades as Netscape, but it is fine
+        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+        # Don't compress images
+        SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+
+        # Make sure proxies don't deliver the wrong content
+        Header append Vary User-Agent env=!dont-vary
+
+    </IfModule>
+
+    <IfModule mod_ssl.c>
+
+        ############################################
+        ## make HTTPS env vars available for CGI mode
+
+        SSLOptions StdEnvVars
+
+    </IfModule>
+
+    <IfModule mod_rewrite.c>
+
+        ############################################
+        ## enable rewrites
+
+        Options +FollowSymLinks
+        RewriteEngine on
+
+        # RewriteLog <%= @params[:server_name] %>-rewrite.log
+        # RewriteLogLevel 0
+
+        ############################################
+        ## you can put here your magento root folder
+        ## path relative to web root
+
+        #RewriteBase /
+
+        <%= (@params[:rewrites] || []).join("\n       ") %>
+
+        RewriteRule ^server-status - [L]
+
+        ############################################
+        ## workaround for HTTP authorization
+        ## in CGI environment
+
+        RewriteRule .* - [E=HTTP_AUTHORIZATION'%{HTTP:Authorization}']
+
+        ############################################
+        ## never rewrite for existing files, directories and links
+
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-l
+
+        ############################################
+        ## rewrite everything else to index.php
+
+        RewriteRule .* <%= @params[:endpoint] || "index.php" %> [L]
+
+    </IfModule>
+
+    AddType application/x-font-woff woff
+
+    ############################################
+    ## Prevent character encoding issues from server overrides
+    ## If you still have problems, use the second line instead
+
+    AddDefaultCharset Off
+    #AddDefaultCharset UTF-8
+
+    ############################################
+    ## If running in cluster environment, uncomment this
+    ## http'//developer.yahoo.com/performance/rules.html#etags'
+
+    FileETag MTime Size
+
+  </Directory>
+
+  <% (@params[:restricted_dirs] || []).each do |dir| %>
+  <Directory <%= @params[:docroot] %>/<%= dir %>>
+      Order deny,allow
+      Deny from all
+  </Directory>
+  <% end %>
+
+  # Include any additional configuration for the project
+  <%= (@params[:includes] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
+</VirtualHost>
