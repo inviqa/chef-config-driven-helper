@@ -1,7 +1,10 @@
 if node["nginx"] && node["nginx"]["sites"]
+  ::Chef::Recipe.send(:include, ConfigDrivenHelper::Util)
+
   node["nginx"]["sites"].each do |name, site|
-    site = node["nginx-sites"]
-      .merge(site)
+    site = ::Chef::Mixin::DeepMerge.hash_only_merge(
+      immutablemash_to_hash(node["nginx-sites"]),
+      immutablemash_to_hash(site))
 
     site['server_name'] = name if !site['server_name']
     name = site['server_name']

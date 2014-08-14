@@ -1,6 +1,10 @@
 if node["apache"] && node["apache"]["sites"]
+  ::Chef::Recipe.send(:include, ConfigDrivenHelper::Util)
+
   node["apache"]["sites"].each do |name, site|
-    site = node["apache-sites"].merge(site)
+    site = ::Chef::Mixin::DeepMerge.hash_only_merge(
+      immutablemash_to_hash(node["apache-sites"]),
+      immutablemash_to_hash(site))
 
     [site['protocols']].flatten.each do |current_protocol|
       next unless ['http', 'https'].include? current_protocol
