@@ -6,7 +6,9 @@ description       "enable driving cookbooks that are not normally config driven 
 version           "1.1.0"
 
 depends "apache2"
+depends "mysql"
 depends "database"
+depends "build-essential"
 
 %w{ debian ubuntu centos redhat fedora scientific amazon windows }.each do |os|
   supports os
