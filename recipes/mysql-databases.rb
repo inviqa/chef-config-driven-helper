@@ -1,8 +1,7 @@
 if node["mysql"] && node["mysql"]["databases"]
   gem_package "mysql" do
     gem_binary nil
-    action :nothing
-    subscribes :install, "service[mysql]", :delayed
+    action :install
   end
 
   node["mysql"]["databases"].each do |name, details|
@@ -21,7 +20,7 @@ if node["mysql"] && node["mysql"]["databases"]
 
       connection connection_details
 
-      subscribes :create, "gem_package[mysql]", :immediately
+      action :create
 
       details.each do |key, value|
         next if key.to_s == "connection"
