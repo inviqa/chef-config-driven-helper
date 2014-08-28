@@ -1,9 +1,5 @@
 if node["mysql"] && node["mysql"]["users"]
-  gem_package "mysql" do
-    gem_binary nil
-    action :nothing
-    subscribes :install, "service[mysql]", :delayed
-  end
+  include_recipe 'config-driven-helper::mysql-ruby'
 
   node["mysql"]["users"].each do |name, details|
     mysql_database_user name do
@@ -20,9 +16,7 @@ if node["mysql"] && node["mysql"]["users"]
       end
 
       connection connection_details
-      action :nothing
-
-      subscribes details["action"] || :grant, "gem_package[mysql]", :immediately
+      action details["action"] || :grant
 
       details.each do |key, value|
         next if key.to_s == "connection"
