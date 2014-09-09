@@ -1,3 +1,5 @@
+default['nginx']['https_variable_emulation'] = true
+
 default['nginx-sites']['secure_port'] = 443
 default['nginx-sites']['insecure_port'] = 80
 default['nginx-sites']['endpoint'] = 'index.php'

@@ -40,9 +40,21 @@ if node["nginx"] && node["nginx"]["sites"]
   # Problematic if using varnish
   file "/etc/nginx/conf.d/default.conf" do
     content ""
+    notifies :reload, "service[nginx]"
   end unless node["nginx"]["default_site_enabled"]
 
-  service "nginx" do
-    action :reload
-  end
+  https_map = <<-eos
+    map $scheme $https {
+        default "";
+        https on;
+    }
+  eos
+
+  file "#{node['nginx']['dir']}/conf.d/https.conf" do
+    content https_map
+    owner 'root'
+    group node['root_group']
+    mode '0644'
+    notifies :reload, 'service[nginx]'
+  end if node['nginx']['https_variable_emulation']
 end
