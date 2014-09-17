@@ -1,3 +1,5 @@
+default['nginx']['https_variable_emulation'] = true
+
 default['nginx-sites']['secure_port'] = 443
 default['nginx-sites']['insecure_port'] = 80
 default['nginx-sites']['endpoint'] = 'index.php'
@@ -9,8 +11,8 @@ default['nginx-sites']['php-fpm'] = {
   'listen' => 'socket'
 }
 default['nginx-sites']['ssl'] = {
-  'certfile' => '/etc/ssl/cert.pem',
-  'keyfile' => '/etc/ssl/key.pem',
+  'certfile' => '/etc/pki/tls/certs/cert.pem',
+  'keyfile' => '/etc/pki/tls/private/key.pem',
   'protocols' => 'TLSv1 TLSv1.1 TLSv1.2',
   'ciphersuite' => "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;"
 }
