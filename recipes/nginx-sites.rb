@@ -1,31 +1,8 @@
 
-node["nginx"]["sites"].each do |name, site|
-  name = site['server_name']
-
-  template "/etc/nginx/sites-available/#{name}" do
-    source site["template"]
-    cookbook site["cookbook"]
-
-    variables({
-      :params => site
-    })
-    notifies :reload, 'service[nginx]', :delayed
+node["nginx"]["sites"].each do |name, site_attrs|
+  app_vhost name do
+    site site_attrs
   end
-
-  if site['protocols'].include? 'https'
-    [ site['ssl']['certfile'], site['ssl']['keyfile'] ].each do |f|
-      next if f.nil?
-      file f do
-        owner 'root'
-        group 'root'
-        mode 0644
-        content node['ssl_certs'][f]
-        notifies :reload, 'service[nginx]', :delayed
-      end unless !node['ssl_certs'][f]
-    end
-  end
-
-  nginx_site name
 end
 
 # Default nginx site on CentOS defined here

@@ -1,24 +1,24 @@
-<% if @params[:protocol] == 'https' %>
-<VirtualHost <%= @params[:secure_ip] || '*' %>:<%= @params[:secure_port] %>>
+<% if @protocol == 'https' %>
+<VirtualHost <%= @params['secure_ip'] || '*' %>:<%= @params['secure_port'] %>>
   SSLEngine on
-  SSLCertificateKeyFile <%= @params[:ssl][:keyfile] %>
-  SSLCertificateFile <%= @params[:ssl][:certfile] %>
-  <%= "SSLCACertificateFile #{@params[:ssl][:cacertfile]}" if defined?(@params[:ssl][:cacertfile]) and !@params[:ssl][:cacertfile].nil? %>
-  <%= "SSLCertificateChainFile #{@params[:ssl][:certchainfile]}" if defined?(@params[:ssl][:certchainfile]) and !@params[:ssl][:certchainfile].nil? %>
-  SSLProtocol <%= @params[:ssl][:protocols] %>
-  SSLCipherSuite <%= @params[:ssl][:ciphersuite] %>
+  SSLCertificateKeyFile <%= @params['ssl']['keyfile'] %>
+  SSLCertificateFile <%= @params['ssl']['certfile'] %>
+  <%= "SSLCACertificateFile #{@params['ssl']['cacertfile']}" if defined?(@params['ssl']['cacertfile']) and !@params['ssl']['cacertfile'].nil? %>
+  <%= "SSLCertificateChainFile #{@params['ssl']['certchainfile']}" if defined?(@params['ssl']['certchainfile']) and !@params['ssl']['certchainfile'].nil? %>
+  SSLProtocol <%= @params['ssl']['protocols'] %>
+  SSLCipherSuite <%= @params['ssl']['ciphersuite'] %>
 <% else %>
-<VirtualHost *:<%= @params[:insecure_port] %>>
+<VirtualHost *:<%= @params['insecure_port'] %>>
 <% end %>
 
-  ServerName <%= @params[:server_name] %>
-  <% "ServerAlias #{@params[:server_aliases].join(" ")}" if @params[:server_aliases] and !@params[:server_aliases].empty? %>
+  ServerName <%= @params['server_name'] %>
+  <% "ServerAlias #{@params['server_aliases'].join(" ")}" if @params['server_aliases'] and !@params['server_aliases'].empty? %>
 
-  DocumentRoot <%= @params[:docroot] %>
+  DocumentRoot <%= @params['docroot'] %>
 
   LogLevel info
-  ErrorLog <%= @params[:server_name] %>-error.log
-  CustomLog <%= @params[:server_name] %>-access.log combined
+  ErrorLog <%= @params['server_name'] %>-error.log
+  CustomLog <%= @params['server_name'] %>-access.log combined
 
   ServerSignature Off
 
@@ -27,15 +27,15 @@
     AllowOverride None
   </Directory>
 
-  <Directory <%= @params[:docroot] %>>
+  <Directory <%= @params['docroot'] %>>
     Options FollowSymLinks
 
-    EnableMMAP <%= @params[:enable_mmap] || 'On' %>
-    EnableSendfile <%= @params[:enable_sendfile] || 'On' %>
+    EnableMMAP <%= @params['enable_mmap'] || 'On' %>
+    EnableSendfile <%= @params['enable_sendfile'] || 'On' %>
 
-<% if @params[:basic_username] %>
-    <%= "Satisfy Any" if @params[:allow_from] %>
-    AuthUserFile <%= @params[:docroot] %>/.htpasswd
+<% if @params['basic_username'] %>
+    <%= "Satisfy Any" if @params['allow_from'] %>
+    AuthUserFile <%= @params['docroot'] %>/.htpasswd
     AuthType Basic
     AuthName "Protected System"
     Require valid-user
@@ -44,10 +44,10 @@
     Allow from env=noauth
 <% end  %>
 
-    AllowOverride <%= @params[:parse_htaccess] ? "All" : "None" %>
+    AllowOverride <%= @params['parse_htaccess'] ? "All" : "None" %>
 
     Order allow,deny
-<%= @params[:allow_from] ? @params[:allow_from].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
+<%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
 
     DirectoryIndex index.php
 
@@ -104,7 +104,7 @@
         Options +FollowSymLinks
         RewriteEngine on
 
-        # RewriteLog <%= @params[:server_name] %>-rewrite.log
+        # RewriteLog <%= @params['server_name'] %>-rewrite.log
         # RewriteLogLevel 0
 
         ############################################
@@ -113,7 +113,7 @@
 
         #RewriteBase /
 
-        <%= (@params[:rewrites] || []).join("\n       ") %>
+        <%= (@params['rewrites'] || []).join("\n       ") %>
 
         RewriteRule ^server-status - [L]
 
@@ -133,7 +133,7 @@
         ############################################
         ## rewrite everything else to index.php
 
-        RewriteRule .* <%= @params[:endpoint] || "index.php" %> [L]
+        RewriteRule .* <%= @params['endpoint'] || "index.php" %> [L]
 
     </IfModule>
 
@@ -154,13 +154,13 @@
 
   </Directory>
 
-  <% (@params[:restricted_dirs] || []).each do |dir| %>
-  <Directory <%= @params[:docroot] %>/<%= dir %>>
+  <% (@params['restricted_dirs'] || []).each do |dir| %>
+  <Directory <%= @params['docroot'] %>/<%= dir %>>
       Order deny,allow
       Deny from all
   </Directory>
   <% end %>
 
   # Include any additional configuration for the project
-  <%= (@params[:includes] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
+  <%= (@params['includes'] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
 </VirtualHost>
