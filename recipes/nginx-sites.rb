@@ -1,9 +1,18 @@
-
 node["nginx"]["sites"].each do |name, site_attrs|
-  app_vhost name do
-    site site_attrs
+  [site_attrs['protocols']].flatten.each do |current_protocol|
+
+    next unless ['http', 'https'].include? current_protocol
+    app_name = current_protocol == 'https' ? "#{name}.ssl" : name
+
+    app_vhost app_name do
+      site site_attrs
+      protocol current_protocol
+      type 'nginx'
+    end
+
   end
 end
+
 
 # Default nginx site on CentOS defined here
 # And it's hardcoded to listen on port 80
