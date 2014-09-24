@@ -1,6 +1,8 @@
 default['nginx']['sites'] = {}
 default['apache']['sites'] = {}
 
+default['ssl_certs'] = {}
+
 default['nginx']['https_variable_emulation'] = true
 
 protocols = {
@@ -30,6 +32,7 @@ protocols = {
     site['template'] = "#{type}_site.conf.erb"
     site['cookbook'] = 'config-driven-helper'
     site['protocols'] = ['http']
+    site['server_type'] = 'nginx'
 
   end
 end
