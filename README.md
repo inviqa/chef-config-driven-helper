@@ -160,7 +160,7 @@ The following example creates the database `my_database` with no additional opti
 
 ## Packages
 
-The packages helper simply enables you to define a list of packages to install. Due to the way that chf merges array attributes you should take care to define all packages at the same precedence level. We may in the future support hash lists to enable purges too.
+The packages helper simply enables you to define a list of packages to install. Due to the way that chef merges array attributes you should take care to define all packages at the same precedence level. We may in the future support hash lists to enable purges too.
 
 Add `config-driven-helper::packages` to enable it.
 
