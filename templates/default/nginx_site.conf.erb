@@ -1,13 +1,15 @@
 server {
-    <% if @params['protocols'].include? 'http' %>
+    <% if @protocol == 'https' %>
+    listen <%= @params['secure_port'] %> ssl;
+    <% else %>
     listen <%= @params['insecure_port'] %>;
     <% end %>
 
     root <%= @params['docroot']%>;
     index index.html;
 
-    <% if @params['protocols'].include? 'https' %>
-    listen <%= @params['secure_port'] %> ssl;
+    <% if @protocol == 'https' %>
+
     ssl_certificate     <%= @params['ssl']['certfile'] %>;
     ssl_certificate_key <%= @params['ssl']['keyfile'] %>;
     ssl_session_timeout 7m;
