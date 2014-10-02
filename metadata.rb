@@ -3,7 +3,7 @@ maintainer        "Inviqa"
 maintainer_email  "msimons@inviqa.com"
 license           "Apache 2.0"
 description       "enable driving cookbooks that are not normally config driven to be so"
-version           "1.2.0"
+version           "1.3.0"
 
 depends "apache2"
 depends "mysql"
