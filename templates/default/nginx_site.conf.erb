@@ -26,6 +26,10 @@ server {
 
     server_name <%= [ @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
+    location ~* \.(?:manifest|appcache)$ {
+        expires -1;
+    }
+
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>
             <% if @params['endpoint'].end_with? ".html" %>

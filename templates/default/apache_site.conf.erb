@@ -51,6 +51,12 @@
 
     DirectoryIndex index.php
 
+    <IfModule mod_expires.c>
+        AddType text/cache-manifest .manifest
+        AddType text/cache-manifest .appcache
+        ExpiresByType text/cache-manifest "access plus 0 seconds"
+    </IfModule>
+
     <IfModule mod_security.c>
         ###########################################
         # disable POST processing to not break multiple image upload
