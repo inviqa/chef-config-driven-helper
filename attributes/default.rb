@@ -33,6 +33,7 @@ protocols = {
     site['cookbook'] = 'config-driven-helper'
     site['protocols'] = ['http']
     site['server_type'] = 'nginx'
+    site['disable_default_location_block'] = false
 
   end
 end

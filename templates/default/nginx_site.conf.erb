@@ -26,6 +26,7 @@ server {
 
     server_name <%= [ @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
+    <% unless @params['disable_default_location_block'] %>
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>
             <% if @params['endpoint'].end_with? ".html" %>
@@ -35,6 +36,7 @@ server {
             <% end %>
         <% end %>
     }
+    <% end %>
 
     <% if @params['php_support'] %>
     location @rewriteapp {
