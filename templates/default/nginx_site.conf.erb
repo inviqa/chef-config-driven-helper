@@ -26,6 +26,10 @@ server {
 
     server_name <%= [ @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
+    <% (@params['includes'] || []).each do |file| %>
+    include <%= file %>;
+    <% end %>
+
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>
             <% if @params['endpoint'].end_with? ".html" %>
@@ -59,9 +63,5 @@ server {
 
     <% (@params['restricted_dirs'] || []).each do |dir| %>
     location <%= dir %> { deny all; }
-    <% end %>
-
-    <% (@params['includes'] || []).each do |file| %>
-    include <%= file %>;
     <% end %>
 }
