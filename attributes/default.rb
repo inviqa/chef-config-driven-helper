@@ -19,6 +19,7 @@ protocols = {
     site['insecure_port'] = 80
     site['endpoint'] = 'index.php'
     site['php_support'] = true
+    site['realpath_document_root'] = false
     site['php-fpm']['host'] = '127.0.0.1'
     site['php-fpm']['port'] = 9000
     site['php-fpm']['socket'] = '/var/run/php-fpm-www.sock'
