@@ -3,6 +3,8 @@ define :app_vhost, :server_type => nil, :site => {} do
   type = params[:server_type] || site['server_type']
   Chef::Log.fatal!("Unsupported vhost type (#{type})") unless ['nginx', 'apache'].include? type
 
+  ::Chef::Recipe.send(:include, ConfigDrivenHelper::Util)
+
   site = immutablemash_to_hash(params[:site])
 
   if site['inherits']
