@@ -33,7 +33,7 @@ protocols = {
     site['template'] = "#{type}_site.conf.erb"
     site['cookbook'] = 'config-driven-helper'
     site['protocols'] = ['http']
-    site['server_type'] = 'nginx'
+    site['server_type'] = type
     site['disable_default_location_block'] = false
 
   end

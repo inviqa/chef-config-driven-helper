@@ -1,9 +1,15 @@
 define :app_vhost, :server_type => nil, :site => {} do
 
-  site = params[:site]
   type = params[:server_type] || site['server_type']
-
   Chef::Log.fatal!("Unsupported vhost type (#{type})") unless ['nginx', 'apache'].include? type
+
+  site = immutablemash_to_hash(params[:site])
+
+  if site['inherits']
+    site = ::Chef::Mixin::DeepMerge.hash_only_merge(
+      immutablemash_to_hash(node[type]['shared_config'][site['inherits']]),
+      site)
+  end
 
   [(site['protocols'] || ['http'])].flatten.each do |protocol|
 
