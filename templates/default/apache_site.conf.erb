@@ -51,6 +51,10 @@
 
     DirectoryIndex index.php
 
+    <% (@params['php_server_variables'] || []).each do |header, value| %>
+    SetEnv <%= header %> <%= value %>
+    <% end %>
+
     <IfModule mod_security.c>
         ###########################################
         # disable POST processing to not break multiple image upload
