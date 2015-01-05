@@ -56,6 +56,10 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param HTTPS $https;
 
+        <% (@params['php_server_variables'] || []).each do |header, value| %>
+        fastcgi_param <%= header %> <%= value %>;
+        <% end %>
+
         fastcgi_pass <%= @params['php-fpm']['listen'] == "socket" ? "unix:#{@params['php-fpm']['socket']}" : "#{@params['php-fpm']['host']}:#{@params['php-fpm']['port']}" %>;
     }
     <% end %>
