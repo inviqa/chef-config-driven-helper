@@ -97,6 +97,28 @@ You can override any of these values by simply defining them in your site attrib
 
 It is assumed that projects that use this cookbook also use the data-bag-merge cookbook from https://cookbooks.opscode.com/cookbooks/data-bag-merge. This cookbook merges encrypted data bags in to your chef attributes to enabled encrypted attributes for cookbooks that do not directly support them.
 
+### Server params 
+
+To add fastcgi_param for Nginx or SetEnv for Apache use php_server_variables under sites key, like in this example for apache (it's similiar for nginx):
+
+```json
+{
+  'apache': {
+    'sites': {
+      'inviqa': {
+        'server_name': 'inviqa.com',
+        'docroot': '/var/www/inviqa.com',
+        'protocols': [ 'http', 'https' ],
+        "php_server_variables": {
+          "FOO": "bar",
+          "ANOTHER": "value"
+        }
+      }
+    }
+  }
+}
+```
+
 ## Nginx sites
 
 The nginx sites helper is very similar to the apache sites helper with the exception that it does not proxy to any kind of `web_app` helper and uses the `nginx` top level attribute instead.
