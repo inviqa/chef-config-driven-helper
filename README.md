@@ -13,11 +13,11 @@ Here is a simple example:
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com'
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com"
       }
     }
   }
@@ -32,13 +32,13 @@ As an example, consider changing the template to a custom one that you have crea
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'template': 'my-custom-template.conf.erb',
-        'cookbook': 'my-project-cookbook'
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "template": "my-custom-template.conf.erb",
+        "cookbook": "my-project-cookbook"
       }
     }
   }
@@ -54,12 +54,12 @@ The apache sites helper also provides a means to create https vhosts. To do this
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'protocols': [ 'http', 'https' ]
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ]
       }
     }
   }
@@ -81,13 +81,13 @@ You can override any of these values by simply defining them in your site attrib
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'protocols': [ 'http', 'https' ],
-        'keyfile': '/tmp/my-super-insecure-keyfile.pem'
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ],
+        "keyfile": "/tmp/my-super-insecure-keyfile.pem"
       }
     }
   }
@@ -103,12 +103,12 @@ To add fastcgi_param for Nginx or SetEnv for Apache use php_server_variables und
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'protocols': [ 'http', 'https' ],
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ],
         "php_server_variables": {
           "FOO": "bar",
           "ANOTHER": "value"
@@ -127,13 +127,13 @@ Add `config-driven-helper::nginx-sites` to enable it.
 
 ```json
 {
-  'nginx': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'protocols': [ 'http', 'https' ],
-        'keyfile': '/tmp/my-super-insecure-keyfile.pem'
+  "nginx": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ],
+        "keyfile": "/tmp/my-super-insecure-keyfile.pem"
       }
     }
   }
@@ -151,11 +151,11 @@ The following example creates the user `my_username` with the defined password a
 
 ```json
 {
-  'mysql': {
-    'users': {
-      'my_username': {
-        'password': 'my-password-from-data-bag-merge',
-        'database_name': 'database-to-grant'
+  "mysql": {
+    "users": {
+      "my_username": {
+        "password": "my-password-from-data-bag-merge",
+        "database_name": "database-to-grant"
       }
     }
   }
@@ -172,9 +172,9 @@ The following example creates the database `my_database` with no additional opti
 
 ```json
 {
-  'mysql': {
-    'databases': {
-      'my_database': { }
+  "mysql": {
+    "databases": {
+      "my_database": { }
     }
   }
 }
@@ -190,7 +190,7 @@ The following example installs both git and java packages.
 
 ```json
 {
-  'packages': [ 'git', 'java' ]
+  "packages": [ "git", "java" ]
 }
 ```
 
@@ -203,8 +203,8 @@ Add `config-driven-helper::services` to enable it.
 The following example shows how to make sure that the mysql service is both enabled and started.
 
 ```json
-  'services': {
-    'mysql': [ 'enable', 'start' ]
+  "services": {
+    "mysql": [ "enable", "start" ]
   }
 ```
 
