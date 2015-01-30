@@ -3,12 +3,12 @@ maintainer        "Inviqa"
 maintainer_email  "msimons@inviqa.com"
 license           "Apache 2.0"
 description       "enable driving cookbooks that are not normally config driven to be so"
-version           "1.3.1"
+version           "1.3.2"
 
-depends "apache2"
-depends "mysql"
-depends "database"
-depends "build-essential"
+depends "apache2", "~> 1.8.14"
+depends "mysql", "~> 4.0.20"
+depends "database", "~> 2.0.0"
+depends "build-essential", "~> 1.4.4"
 
 %w{ debian ubuntu centos redhat fedora scientific amazon windows }.each do |os|
   supports os
