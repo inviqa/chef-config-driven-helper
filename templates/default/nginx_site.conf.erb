@@ -30,6 +30,10 @@ server {
     location ^~ <%= dir %> { deny all; }
     <% end %>
 
+    <% (@params['static_dirs'] || []).each do |dir| %>
+    location ^~ <%= dir %> { }
+    <% end %>
+
     <% unless @params['disable_default_location_block'] %>
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>

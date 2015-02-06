@@ -165,6 +165,12 @@
   </Directory>
   <% end %>
 
+  <% (@params['static_dirs'] || []).each do |dir| %>
+  <Directory <%= @params['docroot'] %>/<%= dir %>>
+      SetHandler None
+  </Directory>
+  <% end %>
+
   # Include any additional configuration for the project
   <%= (@params['includes'] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
 </VirtualHost>
