@@ -26,6 +26,10 @@ server {
 
     server_name <%= [ @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
+    <% (@params['restricted_dirs'] || []).each do |dir| %>
+    location ^~ <%= dir %> { deny all; }
+    <% end %>
+
     <% unless @params['disable_default_location_block'] %>
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>
@@ -66,10 +70,6 @@ server {
 
     error_log /var/log/nginx/<%= @params['server_name'] %>_error.log;
     access_log /var/log/nginx/<%= @params['server_name'] %>_access.log;
-
-    <% (@params['restricted_dirs'] || []).each do |dir| %>
-    location <%= dir %> { deny all; }
-    <% end %>
 
     <% (@params['includes'] || []).each do |file| %>
     include <%= file %>;
