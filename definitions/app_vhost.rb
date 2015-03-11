@@ -31,7 +31,7 @@ define :app_vhost, :server_type => nil, :site => {} do
       file f do
         owner 'root'
         group 'root'
-        mode 0644
+        mode (f == site['ssl']['keyfile'] ? 0600 : 0644)
         content node['ssl_certs'][f]
         notifies :reload, "service[#{service_name}]", :delayed
       end
