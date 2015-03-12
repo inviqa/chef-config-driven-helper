@@ -2,8 +2,8 @@ require 'serverspec'
 require 'net/http'
 require 'openssl'
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
+set :backend, :exec
+set :path, '/sbin:/usr/local/sbin:$PATH'
 
 RSpec.configure do |c|
   c.before :all do

@@ -6,7 +6,7 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: centos-6.4
+  - name: centos-6.6
 
 suites:
   - name: services
@@ -15,6 +15,10 @@ suites:
       - recipe[config-driven-helper::services]
       - recipe[mysql::server]
     attributes:
+      mysql:
+        server_debian_password: password
+        server_root_password: password
+        server_repl_password: password
       services:
         nginx:
           - disable
@@ -39,6 +43,10 @@ suites:
           site1:
             server_name: "test.dev"
             docroot: "/docroot"
+      mysql:
+        server_debian_password: password
+        server_root_password: password
+        server_repl_password: password
 
   - name: nginx-sites-ssl
     run_list:
@@ -60,6 +68,10 @@ suites:
             server_name: "test.dev"
             docroot: "/docroot"
             protocols: ["https"]
+      mysql:
+        server_debian_password: password
+        server_root_password: password
+        server_repl_password: password
 
   - name: nginx-sites-advanced
     run_list:
@@ -84,7 +96,7 @@ suites:
               test: conf/test.conf
             restricted_dirs:
               media: /media
-             
-         
-
-
+      mysql:
+        server_debian_password: password
+        server_root_password: password
+        server_repl_password: password

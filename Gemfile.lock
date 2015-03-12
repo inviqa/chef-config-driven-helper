@@ -93,6 +93,7 @@ GEM
     thor (0.19.1)
     timers (3.0.1)
       hitimes
+    vagrant-wrapper (1.2.1.1)
     varia_model (0.4.0)
       buff-extensions (~> 1.0)
       hashie (>= 2.0.2, < 3.0.0)
@@ -104,3 +105,4 @@ DEPENDENCIES
   berkshelf
   kitchen-vagrant
   test-kitchen
+  vagrant-wrapper
