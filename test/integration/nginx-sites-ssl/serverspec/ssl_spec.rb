@@ -53,9 +53,13 @@ describe "SSL nginx-site configuration" do
 
   describe file("/etc/ssl/cert.pem") do
     it { should be_file }
+
+    it { should be_mode 644 }
   end
 
   describe file("/etc/ssl/key.pem") do
     it { should be_file }
+
+    it { should be_mode 600 }
   end
 end
