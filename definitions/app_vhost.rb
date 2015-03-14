@@ -50,4 +50,6 @@ define :app_vhost, :server_type => nil, :site => {} do
       enable (defined? site['enable'] ? site['enable'] : true)
     end
   end
+
+  site
 end
