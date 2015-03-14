@@ -1,5 +1,7 @@
 module ConfigDrivenHelper
   module Util
+    extend self
+
     # though this is used in this cookbook, it may also be used externally as well
     def immutablemash_to_hash(immutable_mash)
       result = immutable_mash.to_hash.dup
