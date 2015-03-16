@@ -183,9 +183,8 @@ override this by defining the ports in attributes.
 The ports for each item in the array are internally mapped by iptables to those
 defined in /etc/services.
 
-If for some reason, you want to specify the port numbers, you can do so via
-an associative array (called a Hash in Ruby), however, it would be preferable
-for you to edit the /etc/services file to include the changed port.
+If you want to specify the port numbers, you can do so via an associative array
+(called a Hash in Ruby).
 
 ```json
 {
