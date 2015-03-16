@@ -119,6 +119,58 @@ To add fastcgi_param for Nginx or SetEnv for Apache use php_server_variables und
 }
 ```
 
+### Capistrano
+
+The apache sites helper also additionally can set up Capistrano application
+targets, configuring the folder structure and permissions of shared folders
+
+```json
+{
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "capistrano": {
+          "deploy_to": "/var/www/sites/inviqa.com",
+          "owner": "deploy",
+          "group": "deploy",
+          "shared_folders": {
+            "readable": {
+              "folders": [
+                "app"
+              ]
+            },
+            "writeable": {
+              "owner": "apache",
+              "group": "apache",
+              "folders": [
+                "uploads",
+                "app/./cache/disk"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+A shared_folders folder containing a '.' will apply permissions recursively
+from the dot onwards, and not preceding directory names. A shared_folder section
+that doesn't have owner or group will inherit the top-level owner and group.
+
+This creates the following folder structure:
+
+```
+deploy deploy /var/www/sites/inviqa.com
+deploy deploy /var/www/sites/inviqa.com/releases
+deploy deploy /var/www/sites/inviqa.com/shared
+deploy deploy /var/www/sites/inviqa.com/shared/app
+apache apache /var/www/sites/inviqa.com/shared/app/cache
+apache apache /var/www/sites/inviqa.com/shared/app/cache/disk
+apache apache /var/www/sites/inviqa.com/shared/uploads
+```
+
 ## Nginx sites
 
 The nginx sites helper is very similar to the apache sites helper with the exception that it does not proxy to any kind of `web_app` helper and uses the `nginx` top level attribute instead.
