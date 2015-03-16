@@ -162,6 +162,42 @@ The following example creates the user `my_username` with the defined password a
 }
 ```
 
+## Firewall
+
+The iptables-standard recipe defines a standard ipv4 + ipv6 firewall, allowing
+all loopback/imcp traffic, listening incoming port traffic for services
+accessible externally, and related/established traffic for TCP traffic after
+connections are established.
+
+By default, it will allow only http, https and ssh traffic, however you can
+override this by defining the ports in attributes.
+
+```json
+{
+  "iptables-standard": {
+    "allowed_incoming_ports": ["http", "https", "ssh", "rsync"]
+  }
+}
+```
+
+The ports for each item in the array are internally mapped by iptables to those
+defined in /etc/services.
+
+If for some reason, you want to specify the port numbers, you can do so via
+an associative array (called a Hash in Ruby), however, it would be preferable
+for you to edit the /etc/services file to include the changed port.
+
+```json
+{
+  "iptables-standard": {
+    "allowed_incoming_ports": {"http": "8080", "https": "8443", "ssh": "ssh"}
+  }
+}
+```
+
+This will create a firewall with ports 8080, 8443, and /etc/services map for ssh
+(default being 22)
+
 ## Mysql databases
 
 The mysql database helper enables you to create mysql databases from attributes. It proxies the attributes to the `mysql_database` resource defined by the `database` cookbook here: https://github.com/opscode-cookbooks/database#database. This means that any attributes valid there are valid here.

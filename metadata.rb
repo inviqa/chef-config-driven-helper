@@ -6,6 +6,7 @@ description       "enable driving cookbooks that are not normally config driven 
 version           "1.3.3"
 
 depends "apache2", "~> 1.8"
+depends 'iptables-ng', '~> 2.2.0'
 depends "mysql", "~> 4.0"
 depends 'nginx', '< 2.5'
 depends 'chef-solo-search', '~> 0.5.1'
