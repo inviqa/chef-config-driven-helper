@@ -7,7 +7,7 @@ version           "1.3.2"
 
 depends "apache2", "~> 1.8"
 depends "mysql", "~> 4.0"
-depends 'nginx', '>= 2.1', '< 2.5'
+depends 'nginx', '< 2.5'
 depends 'chef-solo-search', '~> 0.5.1'
 depends "database", "~> 2.0"
 depends "build-essential", "~> 1.4"
