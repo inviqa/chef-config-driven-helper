@@ -1,8 +1,8 @@
-require 'spec_helper'
-
 describe 'config-driven-helper::capistrano' do
   context 'with apache site configuration' do
     let(:chef_run) do
+      stub_search("users", "groups:deploy AND NOT action:remove").and_return([])
+
       ChefSpec::SoloRunner.new do |node|
         node.set['apache']['sites']['inviqa'] = {
           'capistrano' => {
@@ -59,6 +59,7 @@ describe 'config-driven-helper::capistrano' do
 
   context 'with nginx site configuration' do
     let(:chef_run) do
+      stub_search("users", "groups:deploy AND NOT action:remove").and_return([])
       ChefSpec::SoloRunner.new do |node|
         node.set['nginx']['sites']['inviqa'] = {
           'capistrano' => {
@@ -77,6 +78,34 @@ describe 'config-driven-helper::capistrano' do
           group: 'deploy',
         )
       end
+    end
+  end
+
+  context 'with users databag containing a deploy user' do
+    let(:chef_run) do
+      users = []
+      users << {
+        'username' => 'deploy',
+        'groups' => ['deploy']
+      }
+      stub_search("users", "groups:deploy AND NOT action:remove").and_return(users)
+
+      user_resource = Chef::Resource::User.new('deploy')
+      user_resource.home '/home/deploy'
+
+      allow_any_instance_of(Chef::Recipe).to receive(:resources).with(:user => 'deploy').and_return(user_resource)
+      ChefSpec::SoloRunner.new do |node|
+        node.set['capistrano']['known_hosts'] = ['github.com', 'example.org']
+      end.converge(described_recipe)
+    end
+
+    it "will manage deploy user accounts" do
+      expect(chef_run).to create_users_manage('deploy')
+    end
+
+    it "will supply known_hosts files for user accounts" do
+      expect(chef_run).to append_to_ssh_known_hosts 'github.com'
+      expect(chef_run).to append_to_ssh_known_hosts 'example.org'
     end
   end
 end

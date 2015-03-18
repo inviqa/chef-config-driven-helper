@@ -9,3 +9,14 @@
     end
   end
 end
+
+users_manage node['capistrano']['group'] do
+  group_id node['capistrano']['gid'] if node['capistrano']['gid']
+  data_bag node['capistrano']['user_data_bag']
+end
+
+node['capistrano']['known_hosts'].each do |host, host_key|
+  ssh_known_hosts_entry host do
+    key host_key if host_key
+  end
+end
