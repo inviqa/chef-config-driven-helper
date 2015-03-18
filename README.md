@@ -121,8 +121,10 @@ To add fastcgi_param for Nginx or SetEnv for Apache use php_server_variables und
 
 ### Capistrano
 
-The apache sites helper also additionally can set up Capistrano application
-targets, configuring the folder structure and permissions of shared folders
+The apache sites helper also additionally performs two things.
+
+First it can set up Capistrano application targets, configuring the folder
+structure and permissions of shared folders
 
 ```json
 {
@@ -170,6 +172,29 @@ apache apache /var/www/sites/inviqa.com/shared/app/cache
 apache apache /var/www/sites/inviqa.com/shared/app/cache/disk
 apache apache /var/www/sites/inviqa.com/shared/uploads
 ```
+
+
+Second, it will create the Capistrano deploy user if there is the appropriate
+data bag item for a user e.g. `data_bags/users/deploy.json`. Note since the
+private key is sensitive, it should be an encrypted data bag.
+
+```json
+{
+  "id": "deploy",
+  "groups": ["deploy"],
+  "ssh_private_key": "-----BEGIN RSA PRIVATE KEY----- ...",
+  "ssh_public_key": "ssh-rsa AAAA... comment"
+}
+```
+
+It will also load the appropriate known SSH host keys to the global
+`/etc/sshd/ssh_known_hosts` so that these SSH hosts will already be trusted at
+deployment time to avoid interactivity problems. The default will add
+github.com's host key, but can be configured via
+`node['capistrano']['known_hosts']`
+
+This attribute will take either an array of SSH host domains (which ssh_known_hosts
+cookbook will look up the SSH host key for, or a Hash of `{host=>host key}`.
 
 ## Nginx sites
 
