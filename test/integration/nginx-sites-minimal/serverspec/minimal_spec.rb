@@ -29,7 +29,7 @@ describe "Minimal nginx-site configuration" do
   end
 
   describe "site configuration file" do
-    config_file = file("/etc/nginx/sites-enabled/test.dev")
+    config_file = file("/etc/nginx/sites-enabled/site1")
 
     its "docroot should be /docroot" do
        expect(config_file).to contain /root \/docroot/
