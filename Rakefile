@@ -3,6 +3,18 @@ require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'foodcritic'
 require 'kitchen'
+require 'kitchen/provisioner/chef_base'
+module Kitchen
+  module Provisioner
+    class ChefBase < Base
+      private
+
+      def berksfile
+        File.join(config[:kitchen_root], "test/Berksfile")
+      end
+    end
+  end
+end
 
 # Style tests. Rubocop and Foodcritic
 namespace :style do
@@ -13,7 +25,8 @@ namespace :style do
   FoodCritic::Rake::LintTask.new(:chef) do |t|
     t.options = {
       fail_tags: ['any'],
-      tags: ['~FC015', '~FC044']
+      tags: ['~FC015', '~FC044'],
+      exclude_paths: ['test/']
     }
   end
 end
