@@ -18,7 +18,7 @@ iptables_ng_rule '10-icmp' do
 end
 
 node['iptables-standard']['allowed_incoming_ports'].each do |rule, port|
-  port = rule unless port
+  next unless port
 
   iptables_ng_rule "20-#{rule}" do
     chain 'STANDARD-FIREWALL'

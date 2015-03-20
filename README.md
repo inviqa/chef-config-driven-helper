@@ -170,32 +170,34 @@ accessible externally, and related/established traffic for TCP traffic after
 connections are established.
 
 By default, it will allow only http, https and ssh traffic, however you can
-override this by defining the ports in attributes.
+override this by defining more ports in attributes.
 
 ```json
 {
   "iptables-standard": {
-    "allowed_incoming_ports": ["http", "https", "ssh", "rsync"]
+    "allowed_incoming_ports": {
+      "rsync": "rsync",
+      "non-standard-software": "12345"
+    }
   }
 }
 ```
 
 The ports for each item in the array are internally mapped by iptables to those
-defined in /etc/services.
+defined in /etc/services if not port numbers.
 
-If you want to specify the port numbers, you can do so via an associative array
-(called a Hash in Ruby).
+If you want to remap the port numbers of existing ports, you can do so via:
 
 ```json
 {
   "iptables-standard": {
-    "allowed_incoming_ports": {"http": "8080", "https": "8443", "ssh": "ssh"}
+    "allowed_incoming_ports": {"http": "8080", "https": null}
   }
 }
 ```
 
-This will create a firewall with ports 8080, 8443, and /etc/services map for ssh
-(default being 22)
+This will create a firewall with http port 8080, along with the default ssh port
+as inherited from the cookbook attributes, leaving the https port blocked.
 
 ## Mysql databases
 
