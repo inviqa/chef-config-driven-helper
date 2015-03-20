@@ -191,7 +191,7 @@ If you want to remap the port numbers of existing ports, you can do so via:
 ```json
 {
   "iptables-standard": {
-    "allowed_incoming_ports": {"http": "8080", "https": null}
+    "allowed_incoming_ports": {"http": "8080", "https": false}
   }
 }
 ```
