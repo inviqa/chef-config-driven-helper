@@ -90,10 +90,6 @@ describe 'config-driven-helper::capistrano' do
       }
       stub_search("users", "groups:deploy AND NOT action:remove").and_return(users)
 
-      user_resource = Chef::Resource::User.new('deploy')
-      user_resource.home '/home/deploy'
-
-      allow_any_instance_of(Chef::Recipe).to receive(:resources).with(:user => 'deploy').and_return(user_resource)
       ChefSpec::SoloRunner.new do |node|
         node.set['capistrano']['known_hosts'] = ['github.com', 'example.org']
       end.converge(described_recipe)
