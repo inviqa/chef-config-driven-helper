@@ -162,6 +162,43 @@ The following example creates the user `my_username` with the defined password a
 }
 ```
 
+## Firewall
+
+The iptables-standard recipe defines a standard ipv4 + ipv6 firewall, allowing
+all loopback/imcp traffic, listening incoming port traffic for services
+accessible externally, and related/established traffic for TCP traffic after
+connections are established.
+
+By default, it will allow only http, https and ssh traffic, however you can
+override this by defining more ports in attributes.
+
+```json
+{
+  "iptables-standard": {
+    "allowed_incoming_ports": {
+      "rsync": "rsync",
+      "non-standard-software": "12345"
+    }
+  }
+}
+```
+
+The ports for each item in the array are internally mapped by iptables to those
+defined in /etc/services if not port numbers.
+
+If you want to remap the port numbers of existing ports, you can do so via:
+
+```json
+{
+  "iptables-standard": {
+    "allowed_incoming_ports": {"http": "8080", "https": false}
+  }
+}
+```
+
+This will create a firewall with http port 8080, along with the default ssh port
+as inherited from the cookbook attributes, leaving the https port blocked.
+
 ## Mysql databases
 
 The mysql database helper enables you to create mysql databases from attributes. It proxies the attributes to the `mysql_database` resource defined by the `database` cookbook here: https://github.com/opscode-cookbooks/database#database. This means that any attributes valid there are valid here.

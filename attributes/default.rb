@@ -39,6 +39,12 @@ protocols = {
   end
 end
 
+default['iptables-standard']['allowed_incoming_ports'] = {
+  "http" => "http",
+  "https" => "https",
+  "ssh" => "ssh"
+}
+
 default['mysql']['connections']['default'] = {
   :username => "root",
   :password => node["mysql"]["server_root_password"],
