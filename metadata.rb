@@ -3,7 +3,7 @@ maintainer        "Inviqa"
 maintainer_email  "msimons@inviqa.com"
 license           "Apache 2.0"
 description       "enable driving cookbooks that are not normally config driven to be so"
-version           "1.3.4"
+version           "1.3.5"
 
 depends "apache2", "~> 1.8"
 depends 'iptables-ng', '~> 2.2.0'
