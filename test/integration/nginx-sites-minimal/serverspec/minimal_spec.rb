@@ -1,8 +1,8 @@
 require 'serverspec'
 require 'net/http'
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
+set :backend, :exec
+set :path, '/sbin:/usr/local/sbin:$PATH'
 
 RSpec.configure do |c|
   c.before :all do
@@ -29,7 +29,7 @@ describe "Minimal nginx-site configuration" do
   end
 
   describe "site configuration file" do
-    config_file = file("/etc/nginx/sites-enabled/test.dev")
+    config_file = file("/etc/nginx/sites-enabled/site1")
 
     its "docroot should be /docroot" do
        expect(config_file).to contain /root \/docroot/

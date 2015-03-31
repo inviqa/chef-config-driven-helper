@@ -35,8 +35,18 @@ protocols = {
   site['disable_default_location_block'] = false
 end
 
+default['iptables-standard']['allowed_incoming_ports'] = {
+  "http" => "http",
+  "https" => "https",
+  "ssh" => "ssh"
+}
+
 default['mysql']['connections']['default'] = {
   :username => "root",
   :password => node["mysql"]["server_root_password"],
   :host => "localhost"
 }
+
+default['capistrano']['user_data_bag'] = 'users'
+default['capistrano']['group'] = 'deploy'
+default['capistrano']['known_hosts'] = %w( github.com )

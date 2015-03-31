@@ -13,11 +13,11 @@ Here is a simple example:
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com'
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com"
       }
     }
   }
@@ -32,13 +32,13 @@ As an example, consider changing the template to a custom one that you have crea
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'template': 'my-custom-template.conf.erb',
-        'cookbook': 'my-project-cookbook'
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "template": "my-custom-template.conf.erb",
+        "cookbook": "my-project-cookbook"
       }
     }
   }
@@ -54,12 +54,12 @@ The apache sites helper also provides a means to create https vhosts. To do this
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'protocols': [ 'http', 'https' ]
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ]
       }
     }
   }
@@ -81,13 +81,13 @@ You can override any of these values by simply defining them in your site attrib
 
 ```json
 {
-  'apache': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'protocols': [ 'http', 'https' ],
-        'keyfile': '/tmp/my-super-insecure-keyfile.pem'
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ],
+        "keyfile": "/tmp/my-super-insecure-keyfile.pem"
       }
     }
   }
@@ -97,6 +97,105 @@ You can override any of these values by simply defining them in your site attrib
 
 It is assumed that projects that use this cookbook also use the data-bag-merge cookbook from https://cookbooks.opscode.com/cookbooks/data-bag-merge. This cookbook merges encrypted data bags in to your chef attributes to enabled encrypted attributes for cookbooks that do not directly support them.
 
+### Server params 
+
+To add fastcgi_param for Nginx or SetEnv for Apache use php_server_variables under sites key, like in this example for apache (it's similiar for nginx):
+
+```json
+{
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ],
+        "php_server_variables": {
+          "FOO": "bar",
+          "ANOTHER": "value"
+        }
+      }
+    }
+  }
+}
+```
+
+### Capistrano
+
+The apache sites helper also additionally performs two things.
+
+First it can set up Capistrano application targets, configuring the folder
+structure and permissions of shared folders
+
+```json
+{
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "capistrano": {
+          "deploy_to": "/var/www/sites/inviqa.com",
+          "owner": "deploy",
+          "group": "deploy",
+          "shared_folders": {
+            "readable": {
+              "folders": [
+                "app"
+              ]
+            },
+            "writeable": {
+              "owner": "apache",
+              "group": "apache",
+              "folders": [
+                "uploads",
+                "app/./cache/disk"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+A shared_folders folder containing a '.' will apply permissions recursively
+from the dot onwards, and not preceding directory names. A shared_folder section
+that doesn't have owner or group will inherit the top-level owner and group.
+
+This creates the following folder structure:
+
+```
+deploy deploy /var/www/sites/inviqa.com
+deploy deploy /var/www/sites/inviqa.com/releases
+deploy deploy /var/www/sites/inviqa.com/shared
+deploy deploy /var/www/sites/inviqa.com/shared/app
+apache apache /var/www/sites/inviqa.com/shared/app/cache
+apache apache /var/www/sites/inviqa.com/shared/app/cache/disk
+apache apache /var/www/sites/inviqa.com/shared/uploads
+```
+
+
+Second, it will create the Capistrano deploy user if there is the appropriate
+data bag item for a user e.g. `data_bags/users/deploy.json`. Note since the
+private key is sensitive, it should be an encrypted data bag.
+
+```json
+{
+  "id": "deploy",
+  "groups": ["deploy"],
+  "ssh_private_key": "-----BEGIN RSA PRIVATE KEY----- ...",
+  "ssh_public_key": "ssh-rsa AAAA... comment"
+}
+```
+
+It will also load the appropriate known SSH host keys to the global
+`/etc/sshd/ssh_known_hosts` so that these SSH hosts will already be trusted at
+deployment time to avoid interactivity problems. The default will add
+github.com's host key, but can be configured via
+`node['capistrano']['known_hosts']`
+
+This attribute will take either an array of SSH host domains (which ssh_known_hosts
+cookbook will look up the SSH host key for, or a Hash of `{host=>host key}`.
+
 ## Nginx sites
 
 The nginx sites helper is very similar to the apache sites helper with the exception that it does not proxy to any kind of `web_app` helper and uses the `nginx` top level attribute instead.
@@ -105,13 +204,13 @@ Add `config-driven-helper::nginx-sites` to enable it.
 
 ```json
 {
-  'nginx': {
-    'sites': {
-      'inviqa': {
-        'server_name': 'inviqa.com',
-        'docroot': '/var/www/inviqa.com',
-        'protocols': [ 'http', 'https' ],
-        'keyfile': '/tmp/my-super-insecure-keyfile.pem'
+  "nginx": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ],
+        "keyfile": "/tmp/my-super-insecure-keyfile.pem"
       }
     }
   }
@@ -129,16 +228,53 @@ The following example creates the user `my_username` with the defined password a
 
 ```json
 {
-  'mysql': {
-    'users': {
-      'my_username': {
-        'password': 'my-password-from-data-bag-merge',
-        'database_name': 'database-to-grant'
+  "mysql": {
+    "users": {
+      "my_username": {
+        "password": "my-password-from-data-bag-merge",
+        "database_name": "database-to-grant"
       }
     }
   }
 }
 ```
+
+## Firewall
+
+The iptables-standard recipe defines a standard ipv4 + ipv6 firewall, allowing
+all loopback/imcp traffic, listening incoming port traffic for services
+accessible externally, and related/established traffic for TCP traffic after
+connections are established.
+
+By default, it will allow only http, https and ssh traffic, however you can
+override this by defining more ports in attributes.
+
+```json
+{
+  "iptables-standard": {
+    "allowed_incoming_ports": {
+      "rsync": "rsync",
+      "non-standard-software": "12345"
+    }
+  }
+}
+```
+
+The ports for each item in the array are internally mapped by iptables to those
+defined in /etc/services if not port numbers.
+
+If you want to remap the port numbers of existing ports, you can do so via:
+
+```json
+{
+  "iptables-standard": {
+    "allowed_incoming_ports": {"http": "8080", "https": false}
+  }
+}
+```
+
+This will create a firewall with http port 8080, along with the default ssh port
+as inherited from the cookbook attributes, leaving the https port blocked.
 
 ## Mysql databases
 
@@ -150,9 +286,9 @@ The following example creates the database `my_database` with no additional opti
 
 ```json
 {
-  'mysql': {
-    'databases': {
-      'my_database': { }
+  "mysql": {
+    "databases": {
+      "my_database": { }
     }
   }
 }
@@ -168,7 +304,7 @@ The following example installs both git and java packages.
 
 ```json
 {
-  'packages': [ 'git', 'java' ]
+  "packages": [ "git", "java" ]
 }
 ```
 
@@ -181,8 +317,8 @@ Add `config-driven-helper::services` to enable it.
 The following example shows how to make sure that the mysql service is both enabled and started.
 
 ```json
-  'services': {
-    'mysql': [ 'enable', 'start' ]
+  "services": {
+    "mysql": [ "enable", "start" ]
   }
 ```
 

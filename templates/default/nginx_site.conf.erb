@@ -26,6 +26,14 @@ server {
 
     server_name <%= [ @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
+    <% (@params['restricted_dirs'] || []).each do |dir| %>
+    location ^~ <%= dir %> { deny all; }
+    <% end %>
+
+    <% (@params['static_dirs'] || []).each do |dir| %>
+    location ^~ <%= dir %> { }
+    <% end %>
+
     <% unless @params['disable_default_location_block'] %>
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>
@@ -56,16 +64,16 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param HTTPS $https;
 
+        <% (@params['php_server_variables'] || []).each do |header, value| %>
+        fastcgi_param <%= header %> <%= value %>;
+        <% end %>
+
         fastcgi_pass <%= @params['php-fpm']['listen'] == "socket" ? "unix:#{@params['php-fpm']['socket']}" : "#{@params['php-fpm']['host']}:#{@params['php-fpm']['port']}" %>;
     }
     <% end %>
 
     error_log /var/log/nginx/<%= @params['server_name'] %>_error.log;
     access_log /var/log/nginx/<%= @params['server_name'] %>_access.log;
-
-    <% (@params['restricted_dirs'] || []).each do |dir| %>
-    location <%= dir %> { deny all; }
-    <% end %>
 
     <% (@params['includes'] || []).each do |file| %>
     include <%= file %>;
