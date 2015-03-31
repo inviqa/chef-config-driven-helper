@@ -119,6 +119,83 @@ To add fastcgi_param for Nginx or SetEnv for Apache use php_server_variables und
 }
 ```
 
+### Capistrano
+
+The apache sites helper also additionally performs two things.
+
+First it can set up Capistrano application targets, configuring the folder
+structure and permissions of shared folders
+
+```json
+{
+  "apache": {
+    "sites": {
+      "inviqa": {
+        "capistrano": {
+          "deploy_to": "/var/www/sites/inviqa.com",
+          "owner": "deploy",
+          "group": "deploy",
+          "shared_folders": {
+            "readable": {
+              "folders": [
+                "app"
+              ]
+            },
+            "writeable": {
+              "owner": "apache",
+              "group": "apache",
+              "folders": [
+                "uploads",
+                "app/./cache/disk"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+A shared_folders folder containing a '.' will apply permissions recursively
+from the dot onwards, and not preceding directory names. A shared_folder section
+that doesn't have owner or group will inherit the top-level owner and group.
+
+This creates the following folder structure:
+
+```
+deploy deploy /var/www/sites/inviqa.com
+deploy deploy /var/www/sites/inviqa.com/releases
+deploy deploy /var/www/sites/inviqa.com/shared
+deploy deploy /var/www/sites/inviqa.com/shared/app
+apache apache /var/www/sites/inviqa.com/shared/app/cache
+apache apache /var/www/sites/inviqa.com/shared/app/cache/disk
+apache apache /var/www/sites/inviqa.com/shared/uploads
+```
+
+
+Second, it will create the Capistrano deploy user if there is the appropriate
+data bag item for a user e.g. `data_bags/users/deploy.json`. Note since the
+private key is sensitive, it should be an encrypted data bag.
+
+```json
+{
+  "id": "deploy",
+  "groups": ["deploy"],
+  "ssh_private_key": "-----BEGIN RSA PRIVATE KEY----- ...",
+  "ssh_public_key": "ssh-rsa AAAA... comment"
+}
+```
+
+It will also load the appropriate known SSH host keys to the global
+`/etc/sshd/ssh_known_hosts` so that these SSH hosts will already be trusted at
+deployment time to avoid interactivity problems. The default will add
+github.com's host key, but can be configured via
+`node['capistrano']['known_hosts']`
+
+This attribute will take either an array of SSH host domains (which ssh_known_hosts
+cookbook will look up the SSH host key for, or a Hash of `{host=>host key}`.
+
 ## Nginx sites
 
 The nginx sites helper is very similar to the apache sites helper with the exception that it does not proxy to any kind of `web_app` helper and uses the `nginx` top level attribute instead.

@@ -12,6 +12,8 @@ depends 'nginx', '< 2.5'
 depends 'chef-solo-search', '~> 0.5.1'
 depends "database", "~> 2.0"
 depends "build-essential", "~> 1.4"
+depends 'ssh_known_hosts', '~> 2.0'
+depends "users", "~> 1.7"
 
 %w{ debian ubuntu centos redhat fedora scientific amazon windows }.each do |os|
   supports os
