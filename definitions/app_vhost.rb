@@ -52,5 +52,5 @@ define :app_vhost, :server_type => nil, :site => {} do
     end
   end
 
-  site
+  params[:site] = site
 end
