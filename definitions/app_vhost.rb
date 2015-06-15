@@ -53,4 +53,6 @@ define :app_vhost, :server_type => nil, :site => {} do
   end
 
   params[:site] = site
+
+  site
 end
