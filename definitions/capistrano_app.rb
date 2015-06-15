@@ -9,6 +9,7 @@ define :capistrano_app, :deploy_to => nil do
   directory params[:deploy_to] do
     owner params[:owner]
     group params[:group]
+    recursive true
   end
 
   %w( shared releases ).each do |folder|
