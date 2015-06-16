@@ -5,6 +5,7 @@
     capistrano_app site['capistrano']['deploy_to'] do
       owner site['capistrano']['owner']
       group site['capistrano']['group']
+      mode site['capistrano']['mode']
       shared_folders site['capistrano']['shared_folders']
     end
   end
