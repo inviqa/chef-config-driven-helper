@@ -19,8 +19,8 @@
   DocumentRoot <%= @params['docroot'] %>
 
   LogLevel info
-  ErrorLog <%= @params['server_name'] %>-error.log
-  CustomLog <%= @params['server_name'] %>-access.log combined
+  ErrorLog logs/<%= @params['server_name'] %>-error.log
+  CustomLog logs/<%= @params['server_name'] %>-access.log combined
 
   ServerSignature Off
 
