@@ -7,7 +7,6 @@ Vagrant.configure('2') do |config|
 
   config.vm.network 'private_network', type: 'dhcp'
 
-
   # Enable Vagrant Cachier, for speedy destroy/creates
   if has_cachier
     # Configure cached packages to be shared between instances of the same base box.
