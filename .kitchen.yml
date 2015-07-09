@@ -42,6 +42,7 @@ suites:
         server_debian_password: password
         server_root_password: password
         server_repl_password: password
+        bind_address: 127.0.0.1
       services:
         nginx:
           - disable
@@ -71,6 +72,7 @@ suites:
         server_debian_password: password
         server_root_password: password
         server_repl_password: password
+        bind_address: 127.0.0.1
 
   - name: nginx-sites-ssl
     run_list:
@@ -97,6 +99,7 @@ suites:
         server_debian_password: password
         server_root_password: password
         server_repl_password: password
+        bind_address: 127.0.0.1
 
   - name: nginx-sites-advanced
     run_list:
@@ -126,3 +129,4 @@ suites:
         server_debian_password: password
         server_root_password: password
         server_repl_password: password
+        bind_address: 127.0.0.1
