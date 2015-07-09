@@ -13,5 +13,9 @@ node["nginx"]["sites"].each do |name, site_attrs|
   else
     site = definition
   end
-  ::Chef::Mixin::DeepMerge.hash_only_merge!(node.force_override['nginx']['sites'][name], site)
+
+  values = node.attribute.combined_override['nginx']['sites'][name]
+  ::Chef::Mixin::DeepMerge.hash_only_merge!(values, site)
+  node.force_override!['nginx']['sites'][name] = values
+
 end
