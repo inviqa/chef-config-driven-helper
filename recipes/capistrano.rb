@@ -15,8 +15,9 @@ group node['capistrano']['group'] do
   gid if node['capistrano']['gid']
 end if node['capistrano']['group']
 
-data_bag(node['capistrano']['user_data_bag']).each do |bag_item_id|
-  u = Chef::EncryptedDataBagItem.load('users', bag_item_id)
+user_data_bag = node['capistrano']['user_data_bag']
+data_bag(user_data_bag).each do |bag_item_id|
+  u = Chef::EncryptedDataBagItem.load(user_data_bag, bag_item_id)
   u['username'] ||= u['id']
 
   next unless u['groups'].include? node['capistrano']['group']
