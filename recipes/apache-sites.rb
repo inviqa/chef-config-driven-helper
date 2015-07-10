@@ -1,4 +1,4 @@
-node["apache"]["sites"].each do |name, site_attrs|
+node['apache']['sites'].each do |name, site_attrs|
   definition = app_vhost name do
     site site_attrs
     server_type 'apache'
@@ -11,8 +11,13 @@ node["apache"]["sites"].each do |name, site_attrs|
     site = definition
   end
 
-  values = node.attribute.combined_override['apache']['sites'][name]
-  ::Chef::Mixin::DeepMerge.hash_only_merge!(values, site)
-  node.force_override!['apache']['sites'][name] = values
+  begin
+    values = node.attribute.combined_override['apache']['sites'][name]
+    ::Chef::Mixin::DeepMerge.hash_only_merge!(values, site)
+    node.force_override!['apache']['sites'][name] = values
+  rescue
+    # Chef 11.10 compat
+    ::Chef::Mixin::DeepMerge.hash_only_merge!(node.force_override['apache']['sites'][name], site)
+  end
 
 end
