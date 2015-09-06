@@ -26,7 +26,7 @@ namespace :style do
   FoodCritic::Rake::LintTask.new(:chef) do |t|
     t.options = {
       fail_tags: ['any'],
-      exclude_paths: ['test/']
+      exclude_paths: ['spec/', 'test/']
     }
   end
 end
