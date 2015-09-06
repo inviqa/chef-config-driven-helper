@@ -1,7 +1,7 @@
 describe 'config-driven-helper::capistrano' do
   context 'with apache site configuration' do
     let(:chef_run) do
-      stub_search("users", "groups:deploy AND NOT action:remove").and_return([])
+      stub_data_bag('users').and_return([])
 
       ChefSpec::SoloRunner.new do |node|
         node.set['apache']['sites']['inviqa'] = {
@@ -62,7 +62,8 @@ describe 'config-driven-helper::capistrano' do
 
   context 'with nginx site configuration' do
     let(:chef_run) do
-      stub_search("users", "groups:deploy AND NOT action:remove").and_return([])
+      stub_data_bag('users').and_return([])
+
       ChefSpec::SoloRunner.new do |node|
         node.set['nginx']['sites']['inviqa'] = {
           'capistrano' => {
@@ -87,7 +88,8 @@ describe 'config-driven-helper::capistrano' do
   
   context 'with custom mode configuration' do
     let(:chef_run) do
-      stub_search("users", "groups:deploy AND NOT action:remove").and_return([])
+      stub_data_bag('users').and_return([])
+
       ChefSpec::SoloRunner.new do |node|
         node.set['nginx']['sites']['inviqa'] = {
           'capistrano' => {
@@ -143,12 +145,14 @@ describe 'config-driven-helper::capistrano' do
 
   context 'with users databag containing a deploy user' do
     let(:chef_run) do
-      users = []
-      users << {
+      users = {}
+      users['deploy'] = {
         'username' => 'deploy',
         'groups' => ['deploy']
       }
-      stub_search("users", "groups:deploy AND NOT action:remove").and_return(users)
+
+      stub_data_bag('users').and_return(users.keys)
+      users.each { |item, user| allow(Chef::EncryptedDataBagItem).to receive(:load).with('users', item).and_return(user) }
 
       ChefSpec::SoloRunner.new do |node|
         node.set['capistrano']['known_hosts'] = ['github.com', 'example.org']
@@ -156,7 +160,10 @@ describe 'config-driven-helper::capistrano' do
     end
 
     it "will manage deploy user accounts" do
-      expect(chef_run).to create_users_manage('deploy')
+      expect(chef_run).to create_user('deploy').with(
+        gid: 'deploy'
+      )
+      expect(chef_run).to create_group('deploy')
     end
 
     it "will supply known_hosts files for user accounts" do
