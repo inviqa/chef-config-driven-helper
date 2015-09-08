@@ -2,6 +2,7 @@
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'stove/rake_task'
+Stove::RakeTask.new
 require 'foodcritic'
 require 'kitchen'
 require 'kitchen/provisioner/chef_base'
