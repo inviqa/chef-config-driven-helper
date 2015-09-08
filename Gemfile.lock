@@ -239,7 +239,7 @@ GEM
     treetop (1.5.3)
       polyglot (~> 0.3)
     uuidtools (2.1.5)
-    vagrant-wrapper (2.0.2)
+    vagrant-wrapper (2.0.3)
     varia_model (0.4.0)
       buff-extensions (~> 1.0)
       hashie (>= 2.0.2, < 3.0.0)
@@ -258,7 +258,7 @@ DEPENDENCIES
   rubocop (~> 0.29.1)
   stove (~> 3.2.7)
   test-kitchen (~> 1.3.1)
-  vagrant-wrapper
+  vagrant-wrapper (~> 2.0.3)
 
 BUNDLED WITH
    1.10.6
