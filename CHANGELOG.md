@@ -3,6 +3,7 @@
 IMPROVEMENTS:
 
   * Fix specs/tests
+  * Add Chef 12 compatibility for nginx-sites/apache-sites
 
 BUG FIXES:
 
