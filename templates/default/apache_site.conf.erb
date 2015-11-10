@@ -162,7 +162,11 @@
   
   <% Hash[(@params['locations'] || {}).sort].each do |location, data|
     next unless data
-    data = {'mode' => data } unless data.is_a?(Hash) %>
+    data = {'mode' => data } unless data.is_a?(Hash)
+    if data['type'] == 'regex'
+      location = "~ #{location}"
+    end
+  %>
   <Location <%= location %>>
     <% case data['mode']
        when 'static' %>

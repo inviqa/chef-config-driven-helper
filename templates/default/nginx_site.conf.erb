@@ -36,12 +36,19 @@ server {
 
     <% Hash[(@params['locations'] || {}).sort.reverse].each do |location, data|
       next unless data
-      data = {'mode' => data } unless data.is_a?(Hash) %>
-    location ~ ^<%= Regexp.escape(location) %>(/|$) { <%
-        case data['mode']
-        when 'restricted'
+      data = {'mode' => data } unless data.is_a?(Hash)
+
+      if data['type'].nil? || data['type'] == 'path'
+        location = "~ ^#{Regexp.escape(location)}(/|$)"
+      elsif data['type'] == 'regex'
+        location = "~ #{location}"
+      end
+    %>
+    location <%= location %> { <%
+      case data['mode']
+      when 'restricted'
             %>deny all;<%
-        end 
+      end 
     %> }
     <% end %>
 
