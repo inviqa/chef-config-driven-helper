@@ -159,6 +159,20 @@
     FileETag MTime Size
 
   </Directory>
+  
+  <% Hash[(@params['locations'] || {}).sort].each do |location, data|
+    next unless data
+    data = {'mode' => data } unless data.is_a?(Hash) %>
+  <Location <%= location %>>
+    <% case data['mode']
+       when 'static' %>
+    SetHandler None
+    <% when 'restricted' %>
+      Order deny,allow
+      Deny from all
+    <% end %>
+  </Location>
+  <% end %>
 
   <% (@params['restricted_dirs'] || []).each do |dir| %>
   <Directory <%= @params['docroot'] %>/<%= dir %>>
