@@ -1,4 +1,10 @@
-## 1.4.3 (Unreleased)
+## 1.5.0 (unreleased)
+
+IMPROVEMENTS:
+
+  * Add locations configuration to replace static_dirs and restricted_dirs
+
+## 1.4.3 (8 September 2015)
 
 IMPROVEMENTS:
 
