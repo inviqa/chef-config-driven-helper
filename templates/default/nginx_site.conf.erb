@@ -52,6 +52,10 @@ server {
     %> }
     <% end %>
 
+    <% (@params['includes_first'] || []).each do |file| %>
+    include <%= file %>;
+    <% end %>
+
     <% unless @params['disable_default_location_block'] %>
     location / {
         <% if @params['endpoint'] and not @params['endpoint'].empty? %>
@@ -93,7 +97,7 @@ server {
     error_log /var/log/nginx/<%= @params['server_name'] %>_error.log;
     access_log /var/log/nginx/<%= @params['server_name'] %>_access.log;
 
-    <% (@params['includes'] || []).each do |file| %>
+    <% (@params['includes_last'] || @params['includes'] || []).each do |file| %>
     include <%= file %>;
     <% end %>
 }

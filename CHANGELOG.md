@@ -3,6 +3,7 @@
 IMPROVEMENTS:
 
   * Add locations configuration to replace static_dirs and restricted_dirs
+  * Separate includes into includes_first and include_last for greater control
 
 ## 1.4.3 (8 September 2015)
 

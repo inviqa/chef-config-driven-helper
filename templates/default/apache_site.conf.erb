@@ -24,6 +24,9 @@
 
   ServerSignature Off
 
+  # Include any additional configuration for the project
+  <%= (@params['includes_first'] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
+
   <Directory />
     Options FollowSymLinks
     AllowOverride None
@@ -192,5 +195,5 @@
   <% end %>
 
   # Include any additional configuration for the project
-  <%= (@params['includes'] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
+  <%= (@params['includes_last'] || @params['includes'] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
 </VirtualHost>
