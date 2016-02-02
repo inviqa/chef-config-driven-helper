@@ -32,19 +32,6 @@ namespace :integration do
   desc 'Run Test Kitchen with Vagrant/Docker'
   task :kitchen do
     require 'kitchen'
-    require 'kitchen/provisioner/chef_base'
-    module Kitchen
-      module Provisioner
-        class ChefBase < Base
-          private
-
-          def berksfile
-            File.join(config[:kitchen_root], "test/Berksfile")
-          end
-        end
-      end
-    end
-
     Kitchen.logger = Kitchen.default_file_logger
     loader = Kitchen::Loader::YAML.new(
       project_config: ENV['KITCHEN_YAML'],
