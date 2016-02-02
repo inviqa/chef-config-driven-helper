@@ -17,3 +17,6 @@ Style/HashSyntax:
 
 Style/SingleSpaceBeforeFirstArg:
   Enabled: false
+
+Style/FirstParameterIndentation:
+  Enabled: false
