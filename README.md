@@ -351,7 +351,7 @@ they are listed below.
 
     RSpec/ChefSpec for spec style TDD: `bundle exec rspec`
     Test Kitchen for TDD and testing out individual recipes on a test Virtual Machine: `bundle exec kitchen test`
-    Foodcritic to catch Chef specific style/correctness errors: `bundle exec foodcritic . -f any -C`
+    Foodcritic to catch Chef specific style/correctness errors: `bundle exec foodcritic . -f any -C -X spec/ -X test/`
     Rubocop to catch Ruby style "offenses": `bundle exec rubocop`
 
 Test-Kitchen via vagrant can be quite slow at starting VMs. To help with this, there is the opportunity to use
