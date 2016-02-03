@@ -1,0 +1,36 @@
+---
+driver:
+  name: docker
+
+driver_config:
+  require_chef_omnibus: false
+  use_sudo: false
+  privileged: true
+  private_key: .kitchen/docker_id_rsa
+  public_key: .kitchen/docker_id_rsa.pub
+
+platforms:
+<% %w(11.18 12.6).each do |chef_version| %>
+  - name: centos-6.7-chef-<%= chef_version %>
+    driver_config:
+      platform: centos
+      image: centos:6.7
+      provision_command:
+        - yum makecache && yum -y install autoconf bison flex gcc gcc-c++ kernel-devel make m4 curl tar
+        - curl -L https://www.opscode.com/chef/install.sh | bash -s -- -v "<%= chef_version %>" -d /tmp/vagrant-cache/vagrant_omnibus/
+        - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install --no-ri --no-rdoc net-ssh -v '2.9.2'
+        - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install --no-ri --no-rdoc thor busser busser-serverspec serverspec bundler cucumber rspec-expectations
+        - chown -R kitchen:kitchen /tmp/verifier
+      volume:
+      <% if File.exist?("#{ENV['HOME']}/.vagrant.d/cache/bento/centos-6.7") %>
+        - <%= ENV['HOME'] %>/.vagrant.d/cache/bento/centos-6.7/chef:/var/chef/cache
+        - <%= ENV['HOME'] %>/.vagrant.d/cache/bento/centos-6.7/vagrant_omnibus:/tmp/vagrant-cache/vagrant_omnibus/
+        - <%= ENV['HOME'] %>/.vagrant.d/cache/bento/centos-6.7/yum:/var/cache/yum
+      <% end %>
+    run_list:
+      - recipe[yum]
+    attributes:
+      yum:
+        main:
+          keepcache: true
+<% end %>
