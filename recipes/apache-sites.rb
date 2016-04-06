@@ -12,7 +12,11 @@ node['apache']['sites'].each do |name, site_attrs|
   end
 
   begin
-    values = node.attribute.combined_override['apache']['sites'][name]
+    begin
+      values = node.attribute.combined_override['apache']['sites'][name]
+    rescue
+      values = {}
+    end
     ::Chef::Mixin::DeepMerge.hash_only_merge!(values, site)
     node.force_override!['apache']['sites'][name] = values
   rescue
