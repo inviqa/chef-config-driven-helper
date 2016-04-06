@@ -15,9 +15,13 @@ node['nginx']['sites'].each do |name, site_attrs|
   end
 
   begin
-    values = node.attribute.combined_override['nginx']['sites'][name]
+    begin
+      values = node.attribute.combined_override['nginx']['sites'][name]
+    rescue
+      values = {}
+    end
     ::Chef::Mixin::DeepMerge.hash_only_merge!(values, site)
-    node.force_override!['nginx']['sites'][name] = values
+    node.force_override!(autovivify: false)['nginx']['sites'][name] = values
   rescue
     # Chef 11.10 compat
     ::Chef::Mixin::DeepMerge.hash_only_merge!(node.force_override['nginx']['sites'][name], site)

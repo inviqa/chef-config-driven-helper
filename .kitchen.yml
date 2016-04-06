@@ -29,7 +29,7 @@ platforms:
     driver:
       box: bento/centos-6.7
     provisioner:
-      require_chef_omnibus: "12.4"
+      require_chef_omnibus: "12.8"
 
 suites:
   - name: services
@@ -109,16 +109,37 @@ suites:
       - recipe[php-fpm]
       - recipe[nginx-test::docroot]
       - recipe[config-driven-helper::nginx-sites]
+      - recipe[config-driven-helper::capistrano]
     attributes:
+      capistrano:
+        user_data_bag: false
       php-fpm:
         user: nginx
         group: nginx
       nginx:
+        shared_config:
+          my-app:
+            capistrano:
+              owner: root
+              group: nobody
+              shared_folders:
+                readable:
+                  folders:
+                    - readable1
+                    - readable2
+                writeable:
+                  owner: nobody
+                  folders:
+                    - writeable1
+                    - readable2/./writeable2
         sites:
           site1:
+            inherits: my-app
             server_name: "test.dev"
             server_aliases: [ "test1.dev", "test2.dev" ]
             docroot: "/docroot"
+            capistrano:
+              deploy_to: /var/www/test.dev
             server_params: 
               "set $php_value": "\"cgi.fix_pathinfo = 0\""
             includes:
