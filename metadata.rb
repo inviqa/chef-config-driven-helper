@@ -5,7 +5,7 @@ license           "Apache 2.0"
 description       "enable driving cookbooks that are not normally config driven to be so"
 version           "1.5.1"
 
-depends "apache2", "~> 1.8"
+depends "apache2", ">= 1.8"
 depends 'iptables-ng', '~> 2.2.0'
 depends "mysql", "~> 4.0"
 depends 'nginx', '< 2.4.4'
