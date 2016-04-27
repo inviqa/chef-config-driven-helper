@@ -108,11 +108,15 @@ suites:
       - recipe[nginx-test::include]
       - recipe[php-fpm]
       - recipe[nginx-test::docroot]
+      - recipe[config-driven-helper::packages]
       - recipe[config-driven-helper::nginx-sites]
       - recipe[config-driven-helper::capistrano]
     attributes:
       capistrano:
         user_data_bag: false
+      packages:
+        - git
+        - tcpdump
       php-fpm:
         user: nginx
         group: nginx
