@@ -30,20 +30,6 @@ RSpec::Core::RakeTask.new(:spec)
 namespace :integration do
   desc 'Run Test Kitchen with Vagrant'
   task :vagrant do
-    require 'kitchen'
-    require 'kitchen/provisioner/chef_base'
-    module Kitchen
-      module Provisioner
-        class ChefBase < Base
-          private
-
-          def berksfile
-            File.join(config[:kitchen_root], "test/Berksfile")
-          end
-        end
-      end
-    end
-
     Kitchen.logger = Kitchen.default_file_logger
     Kitchen::Config.new.instances.each do |instance|
       instance.test(:always)
