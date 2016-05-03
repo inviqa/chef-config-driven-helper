@@ -3,7 +3,7 @@
 source 'https://api.berkshelf.com'
 cookbook 'php-fpm'
 cookbook 'nginx', '> 2.0', '< 2.4.4'
-cookbook 'config-driven-helper', :path => '../'
+metadata :path => '../'
 cookbook 'nginx-test', :path => './cookbooks/nginx-test'
 
 
