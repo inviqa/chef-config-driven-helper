@@ -2,6 +2,7 @@
 <% require File.join(__dir__, 'test', 'berksfile_platform') %>
 driver:
   name: vagrant
+  vm_hostname: false
   vagrantfiles:
     - ./test/.Vagrantfile.cachier.rb
 
@@ -10,26 +11,20 @@ provisioner:
   chef_omnibus_install_options: -d /tmp/vagrant-cache/vagrant_omnibus
 
 platforms:
-  - name: centos-6-chef-11.10
+<% [6,7].each do |centos_version| %>
+  - name: centos-<%=centos_version%>-chef-12.8-berksfile-loose
     driver:
-      box: bento/centos-6.7
-    provisioner:
-      require_chef_omnibus: "11.10"
-  - name: centos-6-chef-11.18
-    driver:
-      box: bento/centos-6.7
-    provisioner:
-      require_chef_omnibus: "11.18"
-  - name: centos-6-chef-12.0
-    driver:
-      box: bento/centos-6.7
-    provisioner:
-      require_chef_omnibus: "12.0"
-  - name: centos-6-chef-12.8
-    driver:
-      box: bento/centos-6.7
+      box: inviqa/centos-<%=centos_version%>-minimal
     provisioner:
       require_chef_omnibus: "12.8"
+      berksfile: ./test/berksfiles/loose/Berksfile
+<% end %>
+  - name: centos-6-chef-11.18-berksfile-1.5-style
+    driver:
+      box: inviqa/centos-6-minimal
+    provisioner:
+      require_chef_omnibus: "11.18"
+      berksfile: ./test/berksfiles/1.5-style/Berksfile
 
 suites:
   - name: services
