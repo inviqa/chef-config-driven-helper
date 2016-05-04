@@ -116,8 +116,6 @@ suites:
       
       - recipe[config-driven-helper::capistrano]
     attributes:
-      capistrano:
-        user_data_bag: false
       packages:
         - git
         - tcpdump

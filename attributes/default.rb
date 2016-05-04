@@ -46,7 +46,3 @@ default['mysql']['connections']['default'] = {
   :password => node["mysql"]["server_root_password"],
   :host => "localhost"
 }
-
-default['capistrano']['user_data_bag'] = 'users'
-default['capistrano']['group'] = 'deploy'
-default['capistrano']['known_hosts'] = %w( github.com )
