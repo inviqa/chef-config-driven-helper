@@ -3,6 +3,9 @@
 IMPROVEMENTS:
 
   * #56 Loosen cookbook constraints to support httpd 2.4
+
+CHANGES:
+
   * #57 Disable nginx https variable emulation by default
   * #58 Fork off deploy user work from capistrano recipe to new cookbook
 
