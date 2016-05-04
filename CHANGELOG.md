@@ -1,3 +1,9 @@
+## 2.0.0 (04 May 2016)
+
+IMPROVEMENTS:
+
+  * #56 Loosen cookbook constraints to support httpd 2.4
+
 ## 1.5.0 (10 November 2015)
 
 IMPROVEMENTS:

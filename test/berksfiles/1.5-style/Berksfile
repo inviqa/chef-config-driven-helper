@@ -1,11 +1,19 @@
 #!/usr/bin/env ruby
 #^syntax detection
-source 'https://api.berkshelf.com'
-cookbook 'php-fpm'
-cookbook 'nginx', '> 2.0', '< 2.4.4'
-metadata :path => '../'
-cookbook 'nginx-test', :path => './cookbooks/nginx-test'
+source 'https://supermarket.chef.io'
 
+cookbook 'apache2', '~> 1.8'
+cookbook 'iptables-ng', '~> 2.2.0'
+cookbook 'mysql', '~> 4.0'
+cookbook 'nginx', '>= 2.0', '< 2.4.4'
+cookbook 'database', '~> 2.0'
+cookbook 'build-essential', '~> 1.4'
+cookbook 'ssh_known_hosts', '~> 2.0'
+
+metadata :path => '../../../'
+
+cookbook 'php-fpm'
+cookbook 'config-driven-helper-test', :path => '../../cookbooks/config-driven-helper-test'
 
 # Force aws cookbook to not require ohai 2.1.0+, which is incompatible with
 # nginx 2.4.x
