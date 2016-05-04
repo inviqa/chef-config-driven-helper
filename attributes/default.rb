@@ -3,7 +3,7 @@ default['apache']['sites'] = {}
 
 default['ssl_certs'] = {}
 
-default['nginx']['https_variable_emulation'] = true
+default['nginx']['https_variable_emulation'] = false
 
 protocols = {
   'nginx' => 'TLSv1 TLSv1.1 TLSv1.2',
