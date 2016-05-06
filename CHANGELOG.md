@@ -1,3 +1,9 @@
+## 2.0.2 (06 May 2016)
+
+IMPROVEMENTS:
+
+  * Pin build-essential cookbook to ~> 1.4 to speed up dependency resolution
+
 ## 2.0.1 (06 May 2016)
 
 BUG FIXES:

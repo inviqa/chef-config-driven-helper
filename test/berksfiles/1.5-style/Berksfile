@@ -5,7 +5,6 @@ source 'https://supermarket.chef.io'
 cookbook 'apache2', '~> 1.8'
 cookbook 'iptables-ng', '~> 2.2.0'
 cookbook 'nginx', '>= 2.0', '< 2.4.4'
-cookbook 'build-essential', '~> 1.4'
 
 metadata :path => '../../../'
 
