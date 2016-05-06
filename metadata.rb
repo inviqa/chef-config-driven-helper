@@ -11,7 +11,7 @@ depends "apache2", ">= 1.8"
 depends 'iptables-ng', '>= 2.2'
 depends "mysql", "~> 4.0"
 depends 'nginx', '< 2.4.4'
-depends "database", ">= 2.0"
+depends "database", "~> 2.0.0"
 depends "build-essential", ">= 1.4"
 
 %w{ debian ubuntu centos redhat fedora scientific amazon windows }.each do |os|
