@@ -1,3 +1,9 @@
+## 2.0.1 (06 May 2016)
+
+BUG FIXES:
+
+  * #59 Pin database cookbook to 2.0.x to fix mysql-* recipes
+
 ## 2.0.0 (04 May 2016)
 
 IMPROVEMENTS:
