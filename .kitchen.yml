@@ -27,8 +27,35 @@ platforms:
       berksfile: ./test/berksfiles/1.5-style/Berksfile
 
 suites:
+  - name: mysql-users-and-databases
+    run_list:
+      - recipe[config-driven-helper-test::mysql-server]
+      - recipe[config-driven-helper::mysql-databases]
+      - recipe[config-driven-helper::mysql-users]
+    attributes:
+      mysql:
+        server_debian_password: password
+        server_root_password: password
+        server_repl_password: password
+        bind_address: 127.0.0.1
+        connections:
+          default:
+            password: password
+        databases:
+          qa:
+            connection: default
+          uat:
+            connection: default
+        users:
+          qa:
+            database_name: qa
+            password: password
+          uat:
+            database_name: uat
+            password: password
   - name: services
     run_list:
+      - recipe[config-driven-helper-test::mysql-server]
       - recipe[nginx]
       - recipe[config-driven-helper::services]
       - recipe[mysql::server]
@@ -63,11 +90,6 @@ suites:
           site1:
             server_name: "test.dev"
             docroot: "/docroot"
-      mysql:
-        server_debian_password: password
-        server_root_password: password
-        server_repl_password: password
-        bind_address: 127.0.0.1
 
   - name: nginx-sites-ssl
     run_list:
@@ -90,11 +112,6 @@ suites:
             server_name: "test.dev"
             docroot: "/docroot"
             protocols: ["https"]
-      mysql:
-        server_debian_password: password
-        server_root_password: password
-        server_repl_password: password
-        bind_address: 127.0.0.1
 
 <% ['nginx', 'apache'].each do |webserver| %>
   - name: <%=webserver%>-sites-advanced

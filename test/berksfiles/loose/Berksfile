@@ -4,11 +4,8 @@ source 'https://api.berkshelf.com'
 
 cookbook 'apache2', '~> 3.2'
 cookbook 'iptables-ng', '~> 2.2'
-cookbook 'mysql', '~> 4.0'
 cookbook 'nginx', '= 2.4.2'
-cookbook 'database', '~> 5.1'
 cookbook 'build-essential', '~> 1.4'
-cookbook 'ssh_known_hosts', '~> 2.0'
 
 metadata :path => '../../../'
 
