@@ -77,8 +77,8 @@ describe 'config-driven-helper::iptables-standard' do
       end
     end
 
-    it "doesn't create unmapped rules" do
-      expect(chef_run).not_to create_iptables_ng_rule("20-https")
+    it "deletes unmapped rules" do
+      expect(chef_run).to delete_iptables_ng_rule("20-https")
     end
   end
 end
