@@ -1,3 +1,9 @@
+## 2.0.3 (23 May 2016)
+
+BUG FIXES:
+
+  * #60 Delete any allowed_incoming_ports marked false
+
 ## 2.0.2 (06 May 2016)
 
 IMPROVEMENTS:
