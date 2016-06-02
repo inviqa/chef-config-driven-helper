@@ -5,6 +5,7 @@ node['nginx']['sites'].each do |name, site_attrs|
   definition = app_vhost name do
     site site_attrs
     server_type 'nginx'
+    site_attrs['skip_ssl_write'].nil? ? site_attrs['skip_ssl_write'] : node['skip_ssl_write']
   end
 
   # Different versions of Chef return definitions differently
