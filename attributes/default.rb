@@ -2,6 +2,7 @@ default['nginx']['sites'] = {}
 default['apache']['sites'] = {}
 
 default['ssl_certs'] = {}
+default['skip_ssl_write'] = false
 
 default['nginx']['https_variable_emulation'] = false
 
@@ -28,6 +29,7 @@ protocols = {
   site['ssl']['ciphersuite'] = 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;'
   site['ssl']['cacertfile'] = nil
   site['ssl']['certchainfile'] = nil
+  site['skip_ssl_write'] = nil
   site['template'] = "#{type}_site.conf.erb"
   site['cookbook'] = 'config-driven-helper'
   site['protocols'] = ['http']
