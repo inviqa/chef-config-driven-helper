@@ -48,6 +48,17 @@ server {
       case data['mode']
       when 'restricted'
             %>deny all;<%
+      when 'proxy'
+            %>
+            proxy_pass <%= data['proxy']['location'] %>;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            <% if @protocol == 'https' %>proxy_set_header X-Forwarded-Proto https;<% end %>
+            proxy_connect_timeout <%= data['proxy']['proxy_connect_timeout'] || '60' %>;
+            proxy_send_timeout <%= data['proxy']['proxy_send_timeout'] || '60' %>;
+            proxy_read_timeout <%= data['proxy']['proxy_read_timeout'] || '60' %>;
+            send_timeout <%= data['proxy']['send_timeout'] || '60' %>;
+            <%
       end 
     %> }
     <% end %>
