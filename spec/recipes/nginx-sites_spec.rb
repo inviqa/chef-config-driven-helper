@@ -3,7 +3,7 @@ describe 'config-driven-helper::nginx-sites' do
   let(:https_vhost) { '/etc/nginx/sites-available/example.com.ssl' }
 
   context 'with proxy config' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
         node.set['ssl_certs']['t.cert'] = 'an example cert'
         node.set['ssl_certs']['t.key'] = 'an example key'
