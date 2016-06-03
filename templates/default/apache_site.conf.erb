@@ -40,6 +40,7 @@
 
 <% if @params['basic_username'] %>
     <%= "Satisfy Any" if @params['allow_from'] %>
+    AuthBasicProvider file
     AuthUserFile <%= @params['docroot'] %>/.htpasswd
     AuthType Basic
     AuthName "Protected System"
@@ -51,8 +52,9 @@
 
     AllowOverride <%= @params['parse_htaccess'] ? "All" : "None" %>
 
-    Order allow,deny
-<%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
+<%= @params['allow_from'] || @params['basic_username'] ? "    Order deny,allow" : "    Order allow,deny" %>
+<%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}" }.join("\n") : '' %>
+<%= @params['allow_from'] || @params['basic_username'] ? "    Deny from all" : "    Allow from all" %>
 
     DirectoryIndex index.php
 
