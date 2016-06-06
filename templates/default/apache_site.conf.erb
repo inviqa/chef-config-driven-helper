@@ -24,6 +24,14 @@
 
   ServerSignature Off
 
+  <IfModule mod_rewrite.c>
+    ############################################
+    ## enable rewrite log at vhost level
+    # RewriteEngine on
+    # RewriteLog logs/<%= @params['server_name'] %>-rewrite.log
+    # RewriteLogLevel 9
+  </IfModule>
+
   # Include any additional configuration for the project
   <%= (@params['includes_first'] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
 
@@ -112,9 +120,6 @@
 
         Options +FollowSymLinks
         RewriteEngine on
-
-        # RewriteLog <%= @params['server_name'] %>-rewrite.log
-        # RewriteLogLevel 0
 
         ############################################
         ## you can put here your magento root folder
