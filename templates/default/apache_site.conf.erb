@@ -19,8 +19,8 @@
   DocumentRoot <%= @params['docroot'] %>
 
   LogLevel info
-  ErrorLog logs/<%= @params['server_name'] %>-error.log
-  CustomLog logs/<%= @params['server_name'] %>-access.log combined
+  ErrorLog <%= @type['log_dir'] %>/<%= @params['server_name'] %>-error.log
+  CustomLog <%= @type['log_dir'] %>/<%= @params['server_name'] %>-access.log combined
 
   ServerSignature Off
 
@@ -28,7 +28,7 @@
     ############################################
     ## enable rewrite log at vhost level
     # RewriteEngine on
-    # RewriteLog logs/<%= @params['server_name'] %>-rewrite.log
+    # RewriteLog <%= @type['log_dir'] %>/<%= @params['server_name'] %>-rewrite.log
     # RewriteLogLevel 9
   </IfModule>
 
@@ -167,7 +167,7 @@
     FileETag MTime Size
 
   </Directory>
-  
+
   <% Hash[(@params['locations'] || {}).sort].each do |location, data|
     next unless data
     data = {'mode' => data } unless data.is_a?(Hash)
