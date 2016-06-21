@@ -189,23 +189,24 @@
        when 'static' %>
     SetHandler None
     <% when 'restricted' %>
-<% if @type['version'] == '2.2' %>
-      Order deny,allow
-      Deny from all
-<% else %>
-      Require all denied
-<% end %>
+      <% if @type['version'] == '2.2' %>
+        Order deny,allow
+        Deny from all
+      <% else %>
+        Require all denied
+      <% end %>
     <% end %>
   </Location>
   <% end %>
 
   <% (@params['restricted_dirs'] || []).each do |dir| %>
   <Directory <%= @params['docroot'] %>/<%= dir %>>
-<% if @type['version'] == '2.2' %>
+    <% if @type['version'] == '2.2' %>
       Order deny,allow
       Deny from all
-<% else %>                                                                                                                                                                                 Require all denied
-<% end %>
+    <% else %>
+      Require all denied
+    <% end %>
   </Directory>
   <% end %>
 
