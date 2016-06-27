@@ -47,20 +47,29 @@
     EnableSendfile <%= @params['enable_sendfile'] || 'On' %>
 
 <% if @params['basic_username'] %>
-    <%= "Satisfy Any" if @params['allow_from'] %>
+    <%= "Satisfy Any" if @params['allow_from'] && @type['version'] == '2.2' %>
     AuthUserFile <%= @params['docroot'] %>/.htpasswd
     AuthType Basic
     AuthName "Protected System"
     Require valid-user
 
     SetEnvIf Request_URI ^/LICENSE.txt$ noauth=1
-    Allow from env=noauth
+    <% if @type['version'] == '2.2' %>
+        Allow from env=noauth
+    <% else %>
+        Require env noauth
+    <% end %>
 <% end  %>
 
     AllowOverride <%= @params['parse_htaccess'] ? "All" : "None" %>
 
+<% if @type['version'] == '2.2' %>
     Order allow,deny
-<%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
+    <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
+<% else %>
+    <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Require ip #{ip}" }.join("\n") : '' %>
+    <%= !@params['allow_from'] && !@params['basic_username'] ? "    Require all granted" : "" %>
+<% end %>
 
     DirectoryIndex index.php
 
@@ -180,16 +189,24 @@
        when 'static' %>
     SetHandler None
     <% when 'restricted' %>
-      Order deny,allow
-      Deny from all
+      <% if @type['version'] == '2.2' %>
+        Order deny,allow
+        Deny from all
+      <% else %>
+        Require all denied
+      <% end %>
     <% end %>
   </Location>
   <% end %>
 
   <% (@params['restricted_dirs'] || []).each do |dir| %>
   <Directory <%= @params['docroot'] %>/<%= dir %>>
+    <% if @type['version'] == '2.2' %>
       Order deny,allow
       Deny from all
+    <% else %>
+      Require all denied
+    <% end %>
   </Directory>
   <% end %>
 
