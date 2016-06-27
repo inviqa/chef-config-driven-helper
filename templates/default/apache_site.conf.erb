@@ -46,11 +46,11 @@
     EnableMMAP <%= @params['enable_mmap'] || 'On' %>
     EnableSendfile <%= @params['enable_sendfile'] || 'On' %>
 
-<% if @params['basic_username'] %>
+<% if @params['http_auth']['type'] != 'none' %>
     <%= "Satisfy Any" if @type['version'] == '2.2' %>
-    AuthUserFile <%= @params['docroot'] %>/.htpasswd
-    AuthType Basic
-    AuthName "Protected System"
+    AuthUserFile <%= @params['http_auth']['file'] || "#{@params['docroot']}/.htpasswd" %>
+    AuthType <%= @params['http_auth']['type'].capitalize %>
+    AuthName "<%= @params['http_auth']['realm'] %>"
     Require valid-user
 
     SetEnvIf Request_URI ^<%= Regexp.escape(@params['probe_url']) %>$ noauth=1
