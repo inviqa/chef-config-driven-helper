@@ -21,6 +21,7 @@ define :app_vhost, :server_type => nil, :site => {} do
 
     service_name = type == 'nginx' ? type : 'apache2'
     name = protocol == 'https' ? "#{params[:name]}.ssl" : params[:name]
+    name = "#{name}.conf" if type == 'apache' && node[type]['version'] == '2.4'
 
     template "#{node[type]['dir']}/sites-available/#{name}" do
       source site["template"]
