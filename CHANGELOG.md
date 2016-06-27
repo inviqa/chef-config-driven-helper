@@ -1,3 +1,13 @@
+## 3.0.0 (21 Jun 2016)
+
+NEW FEATURES:
+  * Apache 2.4 compatibility in the apache virtual host. Comprising of:
+    * #66 - Fix name of vhost template resource so the apache2 cookbook can enable the vhost
+    * #68 - Fix incompatible vhost configuration so that it works under apache 2.2 and 2.4
+
+BUG FIXES:
+    * #67 - Ubuntu compatibility for logs directory location
+
 ## 2.0.3 (23 May 2016)
 
 BUG FIXES:
