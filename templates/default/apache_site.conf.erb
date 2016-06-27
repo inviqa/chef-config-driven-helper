@@ -47,7 +47,7 @@
     EnableSendfile <%= @params['enable_sendfile'] || 'On' %>
 
 <% if @params['basic_username'] %>
-    <%= "Satisfy Any" if @params['allow_from'] && @type['version'] == '2.2' %>
+    <%= "Satisfy Any" if @type['version'] == '2.2' %>
     AuthUserFile <%= @params['docroot'] %>/.htpasswd
     AuthType Basic
     AuthName "Protected System"
@@ -64,11 +64,10 @@
     AllowOverride <%= @params['parse_htaccess'] ? "All" : "None" %>
 
 <% if @type['version'] == '2.2' %>
-    Order allow,deny
-    <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
+    <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" }.join("\n") : "" %>
+    <%= 'Order allow,deny' if @params['allow_from'] || @params['basic_username'] %>
 <% else %>
     <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Require ip #{ip}" }.join("\n") : '' %>
-    <%= !@params['allow_from'] && !@params['basic_username'] ? "    Require all granted" : "" %>
 <% end %>
 
     DirectoryIndex index.php
