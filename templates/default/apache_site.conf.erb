@@ -65,7 +65,7 @@
 
 <% if @type['version'] == '2.2' %>
     Order allow,deny
-    <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" } : "    Allow from all" %>
+    <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" }.join("\n") : "    Allow from all" %>
 <% else %>
     <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Require ip #{ip}" }.join("\n") : '' %>
     <%= !@params['allow_from'] && !@params['basic_username'] ? "    Require all granted" : "" %>
