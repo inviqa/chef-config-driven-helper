@@ -7,6 +7,7 @@ NEW FEATURES:
 
 BUG FIXES:
     * #67 - Ubuntu compatibility for logs directory location
+    * #72 - Fix issues with combinations of apache_site allow_from and basic_username
 
 ## 2.0.3 (23 May 2016)
 
