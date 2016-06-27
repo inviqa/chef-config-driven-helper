@@ -28,7 +28,8 @@ define :app_vhost, :server_type => nil, :site => {} do
 
       variables({
         :params => site,
-        :protocol => protocol
+        :protocol => protocol,
+        :type => node[type]
       })
       notifies :reload, "service[#{service_name}]", :delayed
     end
