@@ -22,6 +22,7 @@ protocols = {
   site['php-fpm']['port'] = 9000
   site['php-fpm']['socket'] = '/var/run/php-fpm-www.sock'
   site['php-fpm']['listen'] = 'socket'
+  site['probe_url'] = '/LICENSE.txt' # legacy default value
   site['ssl']['certfile'] = '/etc/pki/tls/certs/cert.pem'
   site['ssl']['keyfile'] = '/etc/pki/tls/private/key.pem'
   site['ssl']['protocols'] = protocols[type]

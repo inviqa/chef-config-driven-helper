@@ -53,7 +53,7 @@
     AuthName "Protected System"
     Require valid-user
 
-    SetEnvIf Request_URI ^/LICENSE.txt$ noauth=1
+    SetEnvIf Request_URI ^<%= Regexp.escape(@params['probe_url']) %>$ noauth=1
     <% if @type['version'] == '2.2' %>
         Allow from env=noauth
     <% else %>
@@ -65,7 +65,7 @@
 
 <% if @type['version'] == '2.2' %>
     <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" }.join("\n") : "" %>
-    <%= 'Order allow,deny' if @params['allow_from'] || @params['basic_username'] %>
+    <%= 'Order allow,deny' if @params['allow_from'] || @params['http_auth']['type'] != 'none' %>
 <% else %>
     <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Require ip #{ip}" }.join("\n") : '' %>
 <% end %>
