@@ -4,6 +4,7 @@ NEW FEATURES:
   * Apache 2.4 compatibility in the apache virtual host. Comprising of:
     * #66 - Fix name of vhost template resource so the apache2 cookbook can enable the vhost
     * #68 - Fix incompatible vhost configuration so that it works under apache 2.2 and 2.4
+    * #73 - Support for http digest auth in apache_site and more attributes
 
 BUG FIXES:
     * #67 - Ubuntu compatibility for logs directory location
