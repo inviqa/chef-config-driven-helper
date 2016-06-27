@@ -53,11 +53,13 @@
     AuthName "<%= @params['http_auth']['realm'] %>"
     Require valid-user
 
+    <% if @params['probe_url'] %>
     SetEnvIf Request_URI ^<%= Regexp.escape(@params['probe_url']) %>$ noauth=1
-    <% if @type['version'] == '2.2' %>
-        Allow from env=noauth
-    <% else %>
-        Require env noauth
+      <% if @type['version'] == '2.2' %>
+    Allow from env=noauth
+      <% else %>
+    Require env noauth
+      <% end %>
     <% end %>
 <% end  %>
 
