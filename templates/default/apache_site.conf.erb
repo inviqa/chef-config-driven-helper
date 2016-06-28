@@ -47,7 +47,7 @@
     EnableSendfile <%= @params['enable_sendfile'] || 'On' %>
 
 <% if @params['http_auth']['type'] != 'none' %>
-    <%= "Satisfy Any" if @type['version'] == '2.2' %>
+    <%= "Satisfy Any" if !@type['version'] || @type['version'] == '2.2' %>
     AuthUserFile <%= @params['http_auth']['file'] || "#{@params['docroot']}/.htpasswd" %>
     AuthType <%= @params['http_auth']['type'].capitalize %>
     AuthName "<%= @params['http_auth']['realm'] %>"
@@ -55,7 +55,7 @@
 
     <% if @params['probe_url'] %>
     SetEnvIf Request_URI ^<%= Regexp.escape(@params['probe_url']) %>$ noauth=1
-      <% if @type['version'] == '2.2' %>
+      <% if !@type['version'] || @type['version'] == '2.2' %>
     Allow from env=noauth
       <% else %>
     Require env noauth
@@ -65,7 +65,7 @@
 
     AllowOverride <%= @params['parse_htaccess'] ? "All" : "None" %>
 
-<% if @type['version'] == '2.2' %>
+<% if !@type['version'] || @type['version'] == '2.2' %>
     <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Allow from #{ip}\n" }.join("\n") : "" %>
     <%= 'Order allow,deny' if @params['allow_from'] || @params['http_auth']['type'] != 'none' %>
 <% else %>
