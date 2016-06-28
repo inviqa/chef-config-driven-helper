@@ -15,6 +15,9 @@ define :app_vhost, :server_type => nil, :site => {} do
   site = ::Chef::Mixin::DeepMerge.hash_only_merge(ConfigDrivenHelper::Util::immutablemash_to_hash(node["#{type}-sites"]), site)
   site['server_name'] ||= params[:name]
 
+  # BC attribute porting
+  site['http_auth']['type'] = 'basic' if site['basic_username']
+
   [(site['protocols'] || ['http'])].flatten.each do |protocol|
 
     Chef::Application.fatal!("Unsupported vhost protocol (#{protocol}) for #{params[:name]}") unless ['http', 'https'].include? protocol
