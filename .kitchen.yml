@@ -116,7 +116,7 @@ suites:
 <% ['nginx', 'apache'].each do |webserver| %>
   - name: <%=webserver%>-sites-advanced
     run_list:
-      - recipe[config-driven-helper::packages]
+      - recipe[config-driven-helper::packages-additional]
       - recipe[config-driven-helper-test::docroot]
 <% if webserver == 'nginx' %>
       - recipe[nginx]
@@ -130,10 +130,10 @@ suites:
       - recipe[config-driven-helper-test::apache-include]
       - recipe[config-driven-helper::apache-sites]
 <% end %>
-      
+
       - recipe[config-driven-helper::capistrano]
     attributes:
-      packages:
+      packages-additional:
         - git
         - tcpdump
       php-fpm:
