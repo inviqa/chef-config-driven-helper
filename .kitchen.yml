@@ -117,6 +117,7 @@ suites:
   - name: <%=webserver%>-sites-advanced
     run_list:
       - recipe[config-driven-helper::packages]
+      - recipe[config-driven-helper::packages-additional]
       - recipe[config-driven-helper-test::docroot]
 <% if webserver == 'nginx' %>
       - recipe[nginx]
@@ -130,12 +131,14 @@ suites:
       - recipe[config-driven-helper-test::apache-include]
       - recipe[config-driven-helper::apache-sites]
 <% end %>
-      
+
       - recipe[config-driven-helper::capistrano]
     attributes:
       packages:
         - git
         - tcpdump
+      packages-additional:
+        subversion: install
       php-fpm:
         user: nginx
         group: nginx
@@ -177,6 +180,7 @@ suites:
         server_repl_password: password
         bind_address: 127.0.0.1
 <% end %>
+
   - name: apache-2.4
     run_list:
       - recipe[apache2]
