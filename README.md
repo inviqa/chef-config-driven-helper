@@ -283,7 +283,10 @@ The following example installs both git and java packages.
 
 ```json
 {
-  "packages-additional": [ "git", "java" ]
+  "packages-additional": {
+    "git": "install",
+    "java": "install"
+  }
 }
 ```
 
