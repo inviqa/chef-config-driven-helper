@@ -177,6 +177,72 @@ suites:
         server_repl_password: password
         bind_address: 127.0.0.1
 <% end %>
+
+<% ['nginx', 'apache'].each do |webserver| %>
+  - name: <%=webserver%>-sites-advanced-old-pkgs-recipe
+    run_list:
+      - recipe[config-driven-helper::packages]
+      - recipe[config-driven-helper-test::docroot]
+<% if webserver == 'nginx' %>
+      - recipe[nginx]
+      - recipe[config-driven-helper-test::nginx-https]
+      - recipe[config-driven-helper-test::nginx-include]
+      - recipe[php-fpm]
+      - recipe[config-driven-helper::nginx-sites]
+<% end %>
+<% if webserver == 'apache' %>
+      - recipe[apache2]
+      - recipe[config-driven-helper-test::apache-include]
+      - recipe[config-driven-helper::apache-sites]
+<% end %>
+
+      - recipe[config-driven-helper::capistrano]
+    attributes:
+      packages:
+        - git
+        - tcpdump
+      php-fpm:
+        user: nginx
+        group: nginx
+        pools:
+          www:
+            php_options:
+              php_value[cgi.fix_pathinfo]: 0
+      <%=webserver%>:
+        shared_config:
+          my-app:
+            capistrano:
+              owner: root
+              group: nobody
+              shared_folders:
+                readable:
+                  folders:
+                    - readable1
+                    - readable2
+                writeable:
+                  owner: nobody
+                  folders:
+                    - writeable1
+                    - readable2/./writeable2
+        sites:
+          site1:
+            inherits: my-app
+            server_name: "test.dev"
+            server_aliases: [ "test1.dev", "test2.dev" ]
+            docroot: "/docroot"
+            capistrano:
+              deploy_to: /var/www/test.dev
+            includes:
+              - conf/test.conf
+            restricted_dirs:
+              - /media
+      mysql:
+        server_debian_password: password
+        server_root_password: password
+        server_repl_password: password
+        bind_address: 127.0.0.1
+<% end %>
+
   - name: apache-2.4
     run_list:
       - recipe[apache2]
