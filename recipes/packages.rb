@@ -1,5 +1,5 @@
-if Gem::Dependency.new('chef', Chef::Version).match('chef', '>= 12.10')
-  raise 'config-driven-helper::packages not supported in chef >= 12.10. Please use config-driven-helper::packages-additional instead, which uses a different syntax'
+if Gem::Dependency.new('chef', '>= 12.9').match?('chef', Chef::VERSION)
+  raise 'config-driven-helper::packages not supported in chef >= 12.9. Please use config-driven-helper::packages-additional instead, which uses a different syntax'
 end
 
 if node['packages']
