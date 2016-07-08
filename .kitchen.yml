@@ -134,6 +134,16 @@ suites:
 
       - recipe[config-driven-helper::capistrano]
     attributes:
+      apache:
+        default_modules:
+          - mod_auth_basic
+          - mod_deflate
+          - mod_expires
+          - mod_filter
+          - mod_headers
+          - mod_php5
+          - mod_rewrite
+          - mod_ssl
       packages:
         - git
         - tcpdump
@@ -180,23 +190,3 @@ suites:
         server_repl_password: password
         bind_address: 127.0.0.1
 <% end %>
-
-  - name: apache-2.4
-    run_list:
-      - recipe[apache2]
-      - recipe[config-driven-helper::apache-sites]
-    attributes:
-      apache:
-        version: "2.4"
-        default_modules:
-          - mod_rewrite
-          - mod_headers
-          - mod_auth_basic
-          - mod_ssl
-          - mod_deflate
-          - mod_expires
-          - mod_filter
-        sites:
-          hello.example.com:
-            docroot: "/var/www/hello.example.com"
-            server_name: "hello.example.com"
