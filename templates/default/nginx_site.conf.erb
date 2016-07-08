@@ -26,6 +26,14 @@ server {
 
     server_name <%= [ @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
+<% if @params['http-auth']['type'] == 'basic' %>
+    <%= 'satisfy any;' if @params['allow_from'] %>
+    auth_basic "<%= @params['http_auth']['realm'] %>";
+    auth_basic_user_file <%= @params['http_auth']['file'] || "/etc/nginx/htpasswd.#{@site_name}" %>;
+<% end %>
+<%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    allow #{ip};" }.join("\n") : '' %>
+<%= @params['allow_from'] || @params['http-auth']['type'] != 'none' ? '    deny all;' : '' %>
+
     <% (@params['restricted_dirs'] || []).each do |dir| %>
     location ^~ <%= dir %> { deny all; }
     <% end %>
