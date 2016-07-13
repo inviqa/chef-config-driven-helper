@@ -23,7 +23,7 @@ describe 'config-driven-helper::packages-additional' do
       ChefSpec::SoloRunner.new do |node|
         node.set['packages-additional'] = {
           "git" => {
-            "action": "install"
+            "action" => "install"
           }
         }
       end.converge(described_recipe)
