@@ -1,3 +1,17 @@
+## 2.2.1 (13 Jul 2016)
+
+BUG FIXES:
+  * #75 Reverse <Directory /> deny in Httpd 2.4 if no restrictions
+  * #77 Fix issue with apache2 cookbook < 2 apache_site enable
+
+## 2.2.0 (06 Jul 2016)
+
+NEW FEATURES:
+  * #76 Add packages-additional recipe to replace package recipe for Chef 12.9+
+
+CHANGES:
+  * #76 Provide more detailed error information when packages recipe can't be used
+
 ## 2.1.0 (28 Jun 2016)
 
 NEW FEATURES:
