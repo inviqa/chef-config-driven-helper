@@ -70,6 +70,7 @@
     <%= 'Order allow,deny' if @params['allow_from'] || @params['http_auth']['type'] != 'none' %>
 <% else %>
     <%= @params['allow_from'] ? @params['allow_from'].map { |ip| "    Require ip #{ip}" }.join("\n") : '' %>
+    <%= 'Require all granted' unless @params['allow_from'] || @params['http_auth']['type'] != 'none' %>
 <% end %>
 
     DirectoryIndex index.php
