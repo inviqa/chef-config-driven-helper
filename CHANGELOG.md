@@ -1,26 +1,43 @@
+## 2.2.2 (20 Jul 2016)
+
+SECURITY FIXES:
+
+  * #78 Httpoxy fix for cookbook version 2.2
+
+## 1.5.3 (20 Jul 2016)
+
+SECURITY FIXES:
+
+  * #79 Httpoxy fix for cookbook version 1.5
+
 ## 2.2.1 (13 Jul 2016)
 
 BUG FIXES:
+
   * #75 Reverse <Directory /> deny in Httpd 2.4 if no restrictions
   * #77 Fix issue with apache2 cookbook < 2 apache_site enable
 
 ## 2.2.0 (06 Jul 2016)
 
 NEW FEATURES:
+
   * #76 Add packages-additional recipe to replace package recipe for Chef 12.9+
 
 CHANGES:
+
   * #76 Provide more detailed error information when packages recipe can't be used
 
 ## 2.1.0 (28 Jun 2016)
 
 NEW FEATURES:
+
   * Apache 2.4 compatibility in the apache virtual host. Comprising of:
     * #66 - Fix name of vhost template resource so the apache2 cookbook can enable the vhost
     * #68 - Fix incompatible vhost configuration so that it works under apache 2.2 and 2.4
   * #73 - Support for http digest auth in apache_site and more attributes
 
 BUG FIXES:
+
     * #67 - Ubuntu compatibility for logs directory location
     * #72 - Fix issues with combinations of apache_site allow_from and basic_username
 
