@@ -150,10 +150,6 @@ suites:
       php-fpm:
         user: nginx
         group: nginx
-        pools:
-          www:
-            php_options:
-              php_value[cgi.fix_pathinfo]: 0
       <%=webserver%>:
         shared_config:
           my-app:
