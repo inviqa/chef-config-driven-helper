@@ -151,6 +151,7 @@ suites:
         user: nginx
         group: nginx
       <%=webserver%>:
+        default_site_enabled: false
         shared_config:
           my-app:
             capistrano:
