@@ -32,6 +32,10 @@
     # RewriteLogLevel 9
   </IfModule>
 
+  <% if @params['request_header_proxy_hide'] -%>
+  RequestHeader unset Proxy early
+  <% end -%>
+
   # Include any additional configuration for the project
   <%= (@params['includes_first'] || []).map{ |i| "Include #{i}" }.join("\n  ") %>
 
