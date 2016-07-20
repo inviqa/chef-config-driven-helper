@@ -18,6 +18,7 @@ protocols = {
   site['endpoint'] = 'index.php'
   site['php_support'] = true
   site['realpath_document_root'] = false
+  site['request_header_proxy_hide'] = true
   site['http_auth']['type'] = 'none'
   site['http_auth']['file'] = nil
   site['http_auth']['realm'] = 'Protected System'

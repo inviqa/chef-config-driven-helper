@@ -4,12 +4,6 @@ require 'net/http'
 set :backend, :exec
 set :path, '/sbin:/usr/local/sbin:$PATH'
 
-RSpec.configure do |c|
-  c.before :all do
-    c.path = '/sbin:/usr/sbin'
-  end
-end
-
 describe "Capistrano configuration" do
   it "should create a capistrano application folder structure" do
     expect(file('/var/www/test.dev')).to be_owned_by 'root'
