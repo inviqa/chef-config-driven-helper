@@ -18,6 +18,7 @@ protocols = {
   site['endpoint'] = 'index.php'
   site['php_support'] = true
   site['realpath_document_root'] = false
+  site['request_header_proxy_hide'] = true
   site['php-fpm']['host'] = '127.0.0.1'
   site['php-fpm']['port'] = 9000
   site['php-fpm']['socket'] = '/var/run/php-fpm-www.sock'

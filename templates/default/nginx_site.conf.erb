@@ -85,6 +85,10 @@ server {
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param HTTPS $https;
+        <% if @params['request_header_proxy_hide'] -%>
+        fastcgi_param HTTP_PROXY "";
+        <% end -%>
+
 
         <% (@params['php_server_variables'] || []).each do |header, value| %>
         fastcgi_param <%= header %> <%= value %>;

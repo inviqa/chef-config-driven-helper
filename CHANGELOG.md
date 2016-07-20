@@ -1,3 +1,8 @@
+## 1.5.3 (20 Jul 2016)
+
+SECURITY FIXES:
+  * #79 Httpoxy fix for cookbook version 1.5
+
 ## 1.5.0 (10 November 2015)
 
 IMPROVEMENTS:
