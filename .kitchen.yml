@@ -128,22 +128,20 @@ suites:
 <% end %>
 <% if webserver == 'apache' %>
       - recipe[apache2]
+      - recipe[apache2::mod_auth_basic]
+      - recipe[apache2::mod_deflate]
+      - recipe[apache2::mod_expires]
+      - recipe[apache2::mod_filter]
+      - recipe[apache2::mod_headers]
+      - recipe[apache2::mod_php5]
+      - recipe[apache2::mod_rewrite]
+      - recipe[apache2::mod_ssl]
       - recipe[config-driven-helper-test::apache-include]
       - recipe[config-driven-helper::apache-sites]
 <% end %>
 
       - recipe[config-driven-helper::capistrano]
     attributes:
-      apache:
-        default_modules:
-          - mod_auth_basic
-          - mod_deflate
-          - mod_expires
-          - mod_filter
-          - mod_headers
-          - mod_php5
-          - mod_rewrite
-          - mod_ssl
       packages:
         - git
         - tcpdump
