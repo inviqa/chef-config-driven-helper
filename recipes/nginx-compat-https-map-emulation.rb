@@ -6,9 +6,13 @@ https_map = <<-eos
 eos
 
 file "#{node['nginx']['dir']}/conf.d/https.conf" do
-  content https_map
-  owner 'root'
-  group node['root_group']
-  mode '0644'
+  if node['nginx']['https_variable_emulation']
+    content https_map
+    owner 'root'
+    group node['root_group']
+    mode '0644'
+  else
+    action :delete
+  end
   notifies :reload, 'service[nginx]'
-end if node['nginx']['https_variable_emulation']
+end
