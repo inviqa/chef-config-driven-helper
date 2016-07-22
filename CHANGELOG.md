@@ -1,3 +1,13 @@
+## 2.3.0 (22 Jul 2016)
+
+NEW FEATURES:
+
+  * #62 Add ability to proxy via NGINX 
+
+BUG FIXES:
+
+  * #79 Fix issue with un-declared packages-additional error
+
 ## 2.2.2 (20 Jul 2016)
 
 SECURITY FIXES:
