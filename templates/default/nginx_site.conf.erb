@@ -42,14 +42,35 @@ server {
         location = "~ ^#{Regexp.escape(location)}(/|$)"
       elsif data['type'] == 'regex'
         location = "~ #{location}"
-      end
-    %>
-    location <%= location %> { <%
+      end -%>
+    location <%= location %> {<%
       case data['mode']
-      when 'restricted'
-            %>deny all;<%
-      end 
-    %> }
+      when 'restricted' %>
+        deny all;<%
+      when 'reverse-proxy'
+        %>
+        <% if data['proxy']['preserve_scheme'] -%>
+        proxy_pass $scheme://<%= data['proxy']['location'].sub(%r{^[a-z0-9]+://}, '') %>;
+        <% else -%>
+        proxy_pass <%= data['proxy']['location'] %>;
+        <% end -%>
+        <% if data['proxy']['preserve_host'] -%>
+        proxy_set_header Host $host;
+        <% end -%>
+        <% unless data['proxy']['exclude_x_forwarded_for'] -%>
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        <% end -%>
+        <% unless data['proxy']['exclude_self'] -%>
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        <% end
+      end
+      if data['server_params'] -%>
+        <% data['server_params'].each do |key, value| -%>
+    <%= key %> <%= value %>;
+        <% end
+      end -%>
+    }
     <% end %>
 
     <% (@params['includes_first'] || []).each do |file| %>
