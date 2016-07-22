@@ -2,6 +2,7 @@ default['nginx']['sites'] = {}
 default['apache']['sites'] = {}
 
 default['ssl_certs'] = {}
+default['packages-additional'] = {}
 
 default['nginx']['https_variable_emulation'] = false
 
