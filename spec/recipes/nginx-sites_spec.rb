@@ -63,5 +63,32 @@ describe 'config-driven-helper::nginx-sites' do
         )
       end
     end
+
+    it 'will write ssl cert to correct file' do
+      expect(chef_run).to render_file("t.cert").with_content(
+        "an example cert"
+      )
+      expect(chef_run).to render_file("t.key").with_content(
+        "an example key"
+      )
+    end
+  end
+
+  context 'with an existing ssl file but no new content' do
+    cached(:chef_run) do
+      allow(File).to receive(:'empty?').with('t.cert').and_return(true)
+      allow(File).to receive(:'empty?').with('t.key').and_return(true)
+      ChefSpec::SoloRunner.new do |node|
+        node.set['nginx']['sites']['example.com']['ssl']['certfile'] = 't.cert'
+        node.set['nginx']['sites']['example.com']['ssl']['keyfile'] = 't.key'
+        node.set['nginx']['sites']['example.com']['server_name'] = 'example.com'
+        node.set['nginx']['sites']['example.com']['protocols'] = %w(https)
+      end.converge('recipe[nginx]', described_recipe)
+    end
+
+    it 'will not write any content to ssl file' do
+      expect(chef_run).not_to render_file("t.cert")
+      expect(chef_run).not_to render_file("t.key")
+    end
   end
 end

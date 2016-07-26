@@ -45,7 +45,14 @@ define :app_vhost, :server_type => nil, :site => {} do
     [ site['ssl']['certfile'], site['ssl']['keyfile'] ].each do |f|
       next if f.nil?
 
-      Chef::Application.fatal!("node['ssl_certs']['#{f}'] is not set but is used by the #{name} #{type} vhost") unless node['ssl_certs'][f]
+      ruby_block 'raise if issue with #{f}' do
+        block do
+          unless File.exist?(f) || node['ssl_certs'][f]
+            raise "#{f} not present for #{name} #{type} vhost but node['ssl_certs']['#{f}'] is not defined"
+          end
+        end
+        action :run
+      end
 
       file f do
         owner 'root'
@@ -53,7 +60,7 @@ define :app_vhost, :server_type => nil, :site => {} do
         mode (f == site['ssl']['keyfile'] ? 0600 : 0644)
         content node['ssl_certs'][f]
         notifies :reload, "service[#{service_name}]", :delayed
-      end
+      end if node['ssl_certs'][f]
     end if protocol == 'https'
 
     self.send "#{type}_site", name do
