@@ -1,8 +1,14 @@
+## 2.4.0 (27 Jul 2016)
+
+NEW FEATURES:
+
+  * #80 Ensure pre-existing ssl files don't get overwritten by this cookbook 
+
 ## 2.3.0 (22 Jul 2016)
 
 NEW FEATURES:
 
-  * #62 Add ability to proxy via NGINX 
+  * #62 Add ability to proxy via NGINX
 
 BUG FIXES:
 
