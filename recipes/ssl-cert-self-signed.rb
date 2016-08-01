@@ -16,7 +16,7 @@ group_domains = {}
 end
 
 group_domains.each do |group_name, certificate_data|
-  subject = certificate_data[:ssl]['subject']
+  subject = certificate_data[:ssl]['subject'] || {}
   subject_hash = {
     "C" => subject['country'],
     "S" => subject['state'],
