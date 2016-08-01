@@ -25,8 +25,12 @@ group_domains.each do |group_name, certificate_data|
     "OU" => subject['organisational_unit'],
     "CN" => certificate_data[:domains].first,
   }.select {|k,v| v && !v.empty?}
-  directory File.dirname(certificate_data[:ssl]['keyfile'])
-  directory File.dirname(certificate_data[:ssl]['certfile'])
+  directory File.dirname(certificate_data[:ssl]['keyfile']) do
+    recursive true
+  end
+  directory File.dirname(certificate_data[:ssl]['certfile']) do
+    recursive true
+  end
 
   execute "Create SSL Certificate for #{group_name}" do
     command "openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 " +
