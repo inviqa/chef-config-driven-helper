@@ -1,7 +1,7 @@
 describe 'config-driven-helper::ssl-cert-self-signed' do
   context 'with a split nginx site configuration' do
     cached(:chef_run) do
-      ChefSpec::SoloRunner.new do |node|
+      solo = ChefSpec::SoloRunner.new do |node|
         node.set['nginx']['sites']['mysite1'] = {
           server_name: 'mysite1.dev',
           ssl: {
@@ -43,7 +43,11 @@ describe 'config-driven-helper::ssl-cert-self-signed' do
           }
         }
         node.set['certbot']['cert-owner']['email'] = 'root@localhost'
-      end.converge(described_recipe)
+      end
+
+      solo.converge(described_recipe) do
+        solo.resource_collection.insert(Chef::Resource::Service.new('nginx', solo.run_context))
+      end
     end
 
     it "will create a separate certificate per site when use_sni is on" do
@@ -53,6 +57,13 @@ describe 'config-driven-helper::ssl-cert-self-signed' do
       expect(chef_run).to run_execute('Create SSL Certificate for /etc/ssl/certs/cert-mysite2.pem').with({
         command: 'openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout /etc/ssl/private/key-mysite2.pem -out /etc/ssl/certs/cert-mysite2.pem -subj "/C=GB/L=Manchester/O=Inviqa/CN=mysite2.dev"'
       })
+    end
+
+    it "will restart the web server" do
+      resource = chef_run.execute('Create SSL Certificate for /etc/ssl/certs/cert-mysite1.pem')
+      expect(resource).to notify('service[nginx]').to(:reload).delayed
+      resource = chef_run.execute('Create SSL Certificate for /etc/ssl/certs/cert-mysite2.pem')
+      expect(resource).to notify('service[nginx]').to(:reload).delayed
     end
   end
 end

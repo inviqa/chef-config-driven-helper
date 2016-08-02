@@ -4,10 +4,11 @@ group_domains = {}
 
   node[server]['sites'].each do |name, site|
     group_name = site['ssl']['certfile']
-    group_domains[group_name] ||= {domains: []}
+    group_domains[group_name] ||= {domains: [], servers: []}
     group_domains[group_name][:domains] << site['server_name']
     group_domains[group_name][:domains] += site['server_aliases'] if site['server_aliases']
     group_domains[group_name][:ssl] = site['ssl']
+    group_domains[group_name][:servers] << server
   end
 end
 
@@ -34,14 +35,14 @@ group_domains.each do |group_name, certificate_data|
       !File.zero?(certificate_data[:ssl]['certfile'])
     }
     umask 0077
-  end
 
-  file certificate_data[:ssl]['keyfile'] do
-    owner "root"
+    certificate_data[:servers].each do |server|
+      server = 'apache2' if server == 'apache'
+      notifies :reload, "service[#{server}]", :delayed
+    end
   end
 
   file certificate_data[:ssl]['certfile'] do
     mode 0644
-    owner "root"
   end
 end
