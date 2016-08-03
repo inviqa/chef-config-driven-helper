@@ -2,6 +2,7 @@
 
 NEW FEATURES:
 
+  * #80 Ensure pre-existing ssl files don't get overwritten by this cookbook 
   * #81 Add recipe to generate self signed ssl
 
 ## 2.3.0 (22 Jul 2016)
