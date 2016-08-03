@@ -1,3 +1,9 @@
+## 2.4.1 (03 Aug 2016)
+
+NEW FEATURES:
+
+  * #82 Self signed ssl fixes
+
 ## 2.4.0 (03 Aug 2016)
 
 NEW FEATURES:
