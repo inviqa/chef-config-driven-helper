@@ -36,7 +36,7 @@ group_domains.each do |group_name, certificate_data|
     }
     umask 0077
 
-    certificate_data[:servers].each do |server|
+    certificate_data[:servers].uniq.each do |server|
       server = 'apache2' if server == 'apache'
       notifies :reload, "service[#{server}]", :delayed
     end
