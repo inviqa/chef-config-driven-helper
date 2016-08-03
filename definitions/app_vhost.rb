@@ -1,26 +1,10 @@
 define :app_vhost, :server_type => nil, :site => {} do
+  site = ConfigDrivenHelper::Util.merge_default_shared_site(node, params[:name], params[:site], params[:server_type])
+  type = site['server_type']
 
-  type = params[:server_type] || site['server_type']
+  [site['protocols']].flatten.each do |protocol|
 
-  Chef::Application.fatal!("Unsupported vhost type (#{type})") unless ['nginx', 'apache'].include? type
-
-  site = ConfigDrivenHelper::Util::immutablemash_to_hash(params[:site])
-
-  if site['inherits']
-    site = ::Chef::Mixin::DeepMerge.hash_only_merge(
-      ConfigDrivenHelper::Util::immutablemash_to_hash(node[type]['shared_config'][site['inherits']]),
-      site)
-  end
-
-  site = ::Chef::Mixin::DeepMerge.hash_only_merge(ConfigDrivenHelper::Util::immutablemash_to_hash(node["#{type}-sites"]), site)
-  site['server_name'] ||= params[:name]
-
-  # BC attribute porting
-  site['http_auth']['type'] = 'basic' if site['basic_username']
-
-  [(site['protocols'] || ['http'])].flatten.each do |protocol|
-
-    Chef::Application.fatal!("Unsupported vhost protocol (#{protocol}) for #{params[:name]}") unless ['http', 'https'].include? protocol
+    raise "Unsupported vhost protocol (#{protocol}) for #{params[:name]}" unless ['http', 'https'].include? protocol
 
     service_name = type == 'nginx' ? type : 'apache2'
     name = protocol == 'https' ? "#{params[:name]}.ssl" : params[:name]

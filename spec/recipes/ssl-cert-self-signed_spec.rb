@@ -4,12 +4,13 @@ describe 'config-driven-helper::ssl-cert-self-signed' do
       solo = ChefSpec::SoloRunner.new do |node|
         node.set['nginx']['sites']['mysite1'] = {
           server_name: 'mysite1.dev',
+          protocols: ['http', 'https'],
           ssl: {
             certfile: "/etc/ssl/certs/cert-mysite1.pem",
             keyfile: "/etc/ssl/private/key-mysite1.pem",
-            subject_name: {
+            subject: {
               country: "GB",
-              location: "Manchester",
+              locality: "Manchester",
               organisation: "Inviqa",
               organisational_unit: "",
             }
@@ -18,12 +19,13 @@ describe 'config-driven-helper::ssl-cert-self-signed' do
         node.set['nginx']['sites']['mysite2'] = {
           server_name: 'mysite2.dev',
           server_aliases: ['js.mysite2.dev', 'css.mysite2.dev'],
+          protocols: ['http', 'https'],
           ssl: {
             certfile: "/etc/ssl/certs/cert-mysite2.pem",
             keyfile: "/etc/ssl/private/key-mysite2.pem",
-            subject_name: {
+            subject: {
               country: "GB",
-              location: "Manchester",
+              locality: "Manchester",
               organisation: "Inviqa",
               organisational_unit: "",
             }
@@ -31,12 +33,13 @@ describe 'config-driven-helper::ssl-cert-self-signed' do
         }
         node.set['nginx']['sites']['mysite3'] = {
           server_name: 'mysite3.dev',
+          protocols: ['http', 'https'],
           ssl: {
             certfile: "/etc/ssl/certs/cert-mysite1.pem",
             keyfile: "/etc/ssl/private/key-mysite1.pem",
-            subject_name: {
+            subject: {
               country: "GB",
-              location: "Manchester",
+              locality: "Manchester",
               organisation: "Inviqa",
               organisational_unit: "",
             }
