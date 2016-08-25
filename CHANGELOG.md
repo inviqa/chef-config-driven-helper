@@ -1,3 +1,11 @@
+
+
+## 2.5.1 (25 Aug 2016)
+
+CHANGES:
+
+  * #84 Change capistrano definition usage to use site name rather than :deploy_to as this is more unique.
+
 ## 2.5.0 (04 Aug 2016)
 
 CHANGES:
@@ -8,7 +16,7 @@ CHANGES:
 
 NEW FEATURES:
 
-  * #80 Ensure pre-existing ssl files don't get overwritten by this cookbook 
+  * #80 Ensure pre-existing ssl files don't get overwritten by this cookbook
   * #81 Add recipe to generate self signed ssl
 
 ## 2.3.0 (22 Jul 2016)
