@@ -19,6 +19,7 @@ define :app_vhost, :server_type => nil, :site => {} do
       cookbook site["cookbook"]
 
       variables({
+        :site_name => params[:name],
         :params => site,
         :protocol => protocol,
         :type => node[type]
