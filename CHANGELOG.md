@@ -1,4 +1,8 @@
+## 2.6.0 (06 Sep 2016)
 
+NEW FEATURES:
+
+  * #64 Add basic auth ability to nginx, to match apache.
 
 ## 2.5.1 (25 Aug 2016)
 
