@@ -30,7 +30,7 @@ define :app_vhost, :server_type => nil, :site => {} do
     [ site['ssl']['certfile'], site['ssl']['keyfile'] ].each do |f|
       next if f.nil?
 
-      ruby_block 'raise if issue with #{f}' do
+      ruby_block "raise if issue with #{f}" do
         block do
           unless File.exist?(f) || node['ssl_certs'][f]
             raise "#{f} not present for #{name} #{type} vhost but node['ssl_certs']['#{f}'] is not defined"
