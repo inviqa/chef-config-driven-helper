@@ -26,6 +26,13 @@ server {
 
     server_name <%= [ @params['server_name'] ].concat(@params['server_aliases'] ? @params['server_aliases'] : []).join(" ")%>;
 
+    <% if @params['forwarded_proto_https_emulation'] -%>
+    set $https_emulation "";
+    if ($http_x_forwarded_proto = "https") {
+        set $https_emulation "https";
+    }
+    <% end -%>
+
 <% if @params['http_auth']['type'] == 'basic' %>
     <%= 'satisfy any;' if @params['allow_from'] %>
     auth_basic "<%= @params['http_auth']['realm'] %>";
@@ -113,7 +120,11 @@ server {
         <% end %>
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        <% if @params['forwarded_proto_https_emulation'] %>
+        fastcgi_param HTTPS $https_emulated
+        <% else %>
         fastcgi_param HTTPS $https;
+        <% end %>
         <% if @params['request_header_proxy_hide'] -%>
         fastcgi_param HTTP_PROXY "";
         <% end -%>
