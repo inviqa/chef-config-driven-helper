@@ -5,7 +5,7 @@ issues_url        "https://github.com/inviqa/chef-config-driven-helper/issues"
 source_url        "https://github.com/inviqa/chef-config-driven-helper"
 license           "Apache 2.0"
 description       "enable driving cookbooks that are not normally config driven to be so"
-version           "2.6.0"
+version           "2.6.1"
 
 depends "apache2", ">= 1.8"
 depends 'iptables-ng', '>= 2.2'
