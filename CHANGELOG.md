@@ -1,3 +1,9 @@
+## 2.6.1 (06 Sep 2016)
+
+BUG FIXES:
+
+  * #87 Fix issue with basic auth requiring allow_from to be set
+
 ## 2.6.0 (06 Sep 2016)
 
 NEW FEATURES:
