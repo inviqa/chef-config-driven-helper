@@ -12,9 +12,25 @@ iptables_ng_rule '10-local' do
   rule '--in-interface lo --jump ACCEPT'
 end
 
-iptables_ng_rule '10-icmp' do
+# cleanup old versions of the rule
+iptables_ng_rule "10-icmp" do
   chain 'STANDARD-FIREWALL'
-  rule '--protocol icmp --jump ACCEPT'
+  action :delete
+end
+
+node['iptables-ng']['enabled_ip_versions'].each do |version|
+  case version
+  when 6
+    icmp = 'ipv6-icmp'
+  else
+    icmp = 'icmp'
+  end
+
+  iptables_ng_rule "10-icmp-ipv#{version}" do
+    chain 'STANDARD-FIREWALL'
+    rule "--protocol #{icmp} --jump ACCEPT"
+    ip_version version.to_i
+  end
 end
 
 node['iptables-standard']['allowed_incoming_ports'].each do |rule, port|
