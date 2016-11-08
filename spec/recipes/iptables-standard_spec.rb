@@ -14,6 +14,19 @@ describe 'config-driven-helper::iptables-standard' do
         )
       end
     end
+
+    it "creates separate entries for ipv4 and ipv6 icmp allow" do
+      expect(chef_run).to create_iptables_ng_rule("10-icmp-ipv4").with(
+        chain: 'STANDARD-FIREWALL',
+        rule: '--protocol icmp --jump ACCEPT',
+        ip_version: 4
+      )
+      expect(chef_run).to create_iptables_ng_rule("10-icmp-ipv6").with(
+        chain: 'STANDARD-FIREWALL',
+        rule: '--protocol ipv6-icmp --jump ACCEPT',
+        ip_version: 6
+      )
+    end
   end
   
   context 'with additonal config' do
