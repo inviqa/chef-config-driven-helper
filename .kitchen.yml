@@ -177,8 +177,9 @@ suites:
               deploy_to: /var/www/test.dev
             includes:
               - conf/test.conf
-            restricted_dirs:
-              - /media
+            locations:
+              /media: static
+              /secret: restricted
       mysql:
         server_debian_password: password
         server_root_password: password
