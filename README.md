@@ -197,6 +197,33 @@ Add `config-driven-helper::nginx-sites` to enable it.
 
 ```
 
+#### http_realip
+eable nginx_http_realip module to be used in conjunction with HTTP_AUTH
+to be able to match the real ip of a visitor even if it comes
+from a Proxied connection (i.e. Varis, CloudFlare, others)
+
+It can be used togheter with Inviqa's cookbook [cloudflare-ips](https://github.com/inviqa/chef-cloudflare-ips)
+
+Default values:
+```
+default['nginx']['real_ip_header'] = "X-Forwarded-For"
+default['nginx']['real_ip_from'] = []
+default['nginx']['real_ip_recursive'] = "on"
+```
+
+Add `config-driven-helper::nginx-http-realip` to enable it.
+```json
+{
+  "nginx": {
+    "real_ip_from": [
+      "1.2.3.4",
+      "5.6.7.8"
+    ]
+  }
+}
+
+```
+
 ### Mysql users
 
 The mysql users helper enables you to create mysql users from attributes. It proxies the attributes to the `mysql_database_user` resource defined by the `database` cookbook here: https://github.com/opscode-cookbooks/database#database_user. This means that any attributes valid there are valid here.

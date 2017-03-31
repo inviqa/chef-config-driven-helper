@@ -5,6 +5,9 @@ default['ssl_certs'] = {}
 default['packages-additional'] = {}
 
 default['nginx']['https_variable_emulation'] = false
+default['nginx']['real_ip_header'] = "X-Forwarded-For"
+default['nginx']['real_ip_from'] = [] 
+default['nginx']['real_ip_recursive'] = "On"
 
 protocols = {
   'nginx' => 'TLSv1 TLSv1.1 TLSv1.2',
