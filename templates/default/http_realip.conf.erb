@@ -1,0 +1,15 @@
+# This config file enables http_realip module
+# some `set_real_ip_from` can be set here
+# other can be contained in separate files i.e. `cloudflare-ips`
+#
+# set_real_ip_from x.x.x.x/xx;
+# set_real_ip_from 0000:0000::/xx;
+
+<%- if @real_ip_from -%>
+    <%- @real_ip_from.each do |ip_address| %>
+set_real_ip_from <%= ip_address %>;
+    <%- end -%>
+<%- end %>
+
+real_ip_header <%= @real_ip_header %>;
+real_ip_recursive <%= @real_ip_recursive %>;

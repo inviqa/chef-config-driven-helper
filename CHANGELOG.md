@@ -1,3 +1,9 @@
+## 2.7.0 (04 Apr 2016)
+
+NEW FEATURES:
+
+  * #91 Add support for Nginx http_realip
+
 ## 2.6.1 (06 Oct 2016)
 
 BUG FIXES:
