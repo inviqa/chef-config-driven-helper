@@ -11,7 +11,6 @@ if node['services']
           r.run_action a
         end
       end
-      subscribes :run, "service[#{k}]", :delayed
       action :nothing
     end
 
