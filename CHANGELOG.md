@@ -1,3 +1,9 @@
+## 2.8.0 (22 Feb 2018)
+
+NEW FEATURES:
+  * #92 Ability to remove weak RSA and 3DES ciphers without fully copying the strong ones
+  * Order ECDSA certificate ciphers ahead of RSA certificate ciphers
+
 ## 2.7.0 (04 Apr 2016)
 
 NEW FEATURES:
