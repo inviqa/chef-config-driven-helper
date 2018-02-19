@@ -76,9 +76,9 @@ suites:
   - name: nginx-sites-minimal
     run_list:
       - recipe[nginx]
-      - recipe[nginx-test::https]
+      - recipe[config-driven-helper-test::nginx-https]
       - recipe[php-fpm]
-      - recipe[nginx-test::docroot]
+      - recipe[config-driven-helper-test::docroot]
       - recipe[config-driven-helper::nginx-sites]
     attributes:
       php-fpm:
@@ -94,9 +94,9 @@ suites:
   - name: nginx-sites-ssl
     run_list:
       - recipe[nginx]
-      - recipe[nginx-test::https]
+      - recipe[config-driven-helper-test::nginx-https]
       - recipe[php-fpm]
-      - recipe[nginx-test::docroot]
+      - recipe[config-driven-helper-test::docroot]
       - recipe[config-driven-helper::nginx-sites]
     attributes:
       ssl_certs:
