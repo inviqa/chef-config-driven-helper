@@ -1,3 +1,9 @@
+## 3.0.0 (21 Feb 2018)
+
+CHANGES:
+
+  * Remove RSA encryption and 3DES TLS ciphers as defaults
+
 ## 2.8.0 (22 Feb 2018)
 
 NEW FEATURES:
