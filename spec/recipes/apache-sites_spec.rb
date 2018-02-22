@@ -11,6 +11,7 @@ describe 'config-driven-helper::apache-sites' do
         node.set['apache']['sites']['hello.example.com']['docroot'] = '/var/www/hello.example.com'
         node.set['apache']['sites']['hello.example.com']['server_name'] = 'hello.example.com'
         node.set['apache']['sites']['hello.example.com']['allow_from'] = ['127.0.0.1']
+        node.set['apache']['version'] = '2.4'
       end.converge(described_recipe)
     end
 

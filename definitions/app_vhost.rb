@@ -1,6 +1,8 @@
 define :app_vhost, :server_type => nil, :site => {} do
   site = ConfigDrivenHelper::Util.merge_default_shared_site(node, params[:name], params[:site], params[:server_type])
   type = site['server_type']
+  site['ssl']['ciphersuite'] ||= site['ssl']['ciphersuites'].map { |suite_name| site['ssl']['ciphersuites_available'][suite_name] }.join(':')
+  site['ssl']['ciphersuite'].sub!(/;?$/, ';') if type == 'nginx' # add erroneous trailing semi-colon for Nginx BC broken template overrides
 
   [site['protocols']].flatten.each do |protocol|
 

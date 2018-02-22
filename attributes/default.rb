@@ -34,7 +34,18 @@ protocols = {
   site['ssl']['certfile'] = '/etc/pki/tls/certs/cert.pem'
   site['ssl']['keyfile'] = '/etc/pki/tls/private/key.pem'
   site['ssl']['protocols'] = protocols[type]
-  site['ssl']['ciphersuite'] = 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;'
+  site['ssl']['ciphersuites_available'] = {
+    'noweak' => '!aNULL:!MD5:!DSS',
+    'rsa' => 'RSA+AESGCM:RSA+AES',
+    'strong' => 'ECDH+ECDSA+AESGCM:ECDH+aRSA+AESGCM:DH+AESGCM:ECDH+ECDSA+AES256:ECDH+aRSA+AES256:DH+AES256:ECDH+ECDSA+AES128:ECDH+aRSA+AES128:DH+AES',
+    'sweet32' => 'ECDH+3DES:DH+3DES:RSA+3DES'
+  }
+  site['ssl']['ciphersuites'] = [
+    'strong',
+    'rsa',
+    'sweet32',
+    'noweak'
+  ]
   site['ssl']['cacertfile'] = nil
   site['ssl']['certchainfile'] = nil
   site['template'] = "#{type}_site.conf.erb"
