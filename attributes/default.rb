@@ -42,8 +42,6 @@ protocols = {
   }
   site['ssl']['ciphersuites'] = [
     'strong',
-    'rsa',
-    'sweet32',
     'noweak'
   ]
   site['ssl']['cacertfile'] = nil
