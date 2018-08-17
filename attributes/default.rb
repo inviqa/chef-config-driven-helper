@@ -51,7 +51,7 @@ protocols = {
   site['protocols'] = ['http']
   site['forwarded_proto_https_emulation'] = false
   site['enable_http2_tls'] = false
-  site['enable_http2_plaintext'] = false
+  site['enable_http2_plaintext_disabling_http1'] = false
   site['server_type'] = type
   site['disable_default_location_block'] = false
 end
