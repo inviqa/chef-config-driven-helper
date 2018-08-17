@@ -83,6 +83,10 @@
     SetEnv <%= header %> <%= value %>
     <% end %>
 
+    <% if @params['forwarded_proto_https_emulation'] %>
+    SetEnvIf x-forwarded-proto https HTTPS=on
+    <% end %>
+
     <IfModule mod_security.c>
         ###########################################
         # disable POST processing to not break multiple image upload
