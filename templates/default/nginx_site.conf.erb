@@ -1,8 +1,8 @@
 server {
     <% if @protocol == 'https' %>
-    listen <%= @params['secure_port'] %> ssl;
+    listen <%= @params['secure_port'] %> ssl<% if @params['enable_http2_tls'] %> http2<% end %>;
     <% else %>
-    listen <%= @params['insecure_port'] %>;
+    listen <%= @params['insecure_port'] %><% if @params['enable_http2_plaintext_disabling_http1'] %> http2<% end %>;
     <% end %>
 
     root <%= @params['docroot']%>;

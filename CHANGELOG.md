@@ -1,3 +1,10 @@
+## 3.1.0 (17 Aug 2018)
+
+CHANGES:
+
+  * #88 Optionally set the HTTPS environment variable to "on" if X-Forwarded-Proto is "https"
+  * #94 Support HTTP2 in NGINX
+
 ## 3.0.0 (21 Feb 2018)
 
 CHANGES:

@@ -198,11 +198,11 @@ Add `config-driven-helper::nginx-sites` to enable it.
 ```
 
 #### http_realip
-eable nginx_http_realip module to be used in conjunction with HTTP_AUTH
+Enable nginx_http_realip module to be used in conjunction with HTTP_AUTH
 to be able to match the real ip of a visitor even if it comes
 from a Proxied connection (i.e. Varis, CloudFlare, others)
 
-It can be used togheter with Inviqa's cookbook [cloudflare-ips](https://github.com/inviqa/chef-cloudflare-ips)
+It can be used together with Inviqa's cookbook [cloudflare-ips](https://github.com/inviqa/chef-cloudflare-ips)
 
 Default values:
 ```
@@ -223,6 +223,29 @@ Add `config-driven-helper::nginx-http-realip` to enable it.
 }
 
 ```
+
+#### HTTP2
+Support HTTP2 in Nginx by adding "http2" to the end of the listen line.
+
+You can enable this by adding `enable_http2_tls` to your site definition like so:
+```json
+{
+  "nginx": {
+    "sites": {
+      "inviqa": {
+        "server_name": "inviqa.com",
+        "docroot": "/var/www/inviqa.com",
+        "protocols": [ "http", "https" ],
+        "keyfile": "/tmp/my-super-insecure-keyfile.pem"
+        "enable_http2_tls": true
+      }
+    }
+  }
+}
+```
+
+`enable_http2_plaintext_disabling_http1` is also available to enable
+http2 on the insecure port, however as Nginx doesn't support h2c for plain HTTP protocol so will not support HTTP 1.1/1.0 if enabled.
 
 ### Mysql users
 
