@@ -49,6 +49,7 @@ protocols = {
   site['template'] = "#{type}_site.conf.erb"
   site['cookbook'] = 'config-driven-helper'
   site['protocols'] = ['http']
+  site['forwarded_proto_https_emulation'] = false
   site['enable_http2_tls'] = false
   site['enable_http2_plaintext'] = false
   site['server_type'] = type
