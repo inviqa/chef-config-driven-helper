@@ -121,7 +121,7 @@ server {
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         <% if @params['forwarded_proto_https_emulation'] %>
-        fastcgi_param HTTPS $https_emulated
+        fastcgi_param HTTPS $https_emulated;
         <% else %>
         fastcgi_param HTTPS $https;
         <% end %>

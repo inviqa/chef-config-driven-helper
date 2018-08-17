@@ -1,6 +1,12 @@
-## 3.1.0 (17 Aug 2018)
+## 3.1.1 (17 Aug 2018)
 
 CHANGES:
+
+  * #95 Fix missing semicolon in NGINX template
+
+## 3.1.0 (17 Aug 2018)
+
+NEW FEATURES:
 
   * #88 Optionally set the HTTPS environment variable to "on" if X-Forwarded-Proto is "https"
   * #94 Support HTTP2 in NGINX
