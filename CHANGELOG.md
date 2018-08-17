@@ -2,7 +2,7 @@
 
 CHANGES:
 
-  * #88 Optionally set the HTTPS environment variable to "on" if X-Forwarded-Proto is "https" in NGINX
+  * #88 Optionally set the HTTPS environment variable to "on" if X-Forwarded-Proto is "https"
   * #94 Support HTTP2 in NGINX
 
 ## 3.0.0 (21 Feb 2018)
