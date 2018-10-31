@@ -114,11 +114,11 @@ server {
         include fastcgi_params;
 
         <% if @params['realpath_document_root'] %>
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
         fastcgi_param PATH_TRANSLATED $realpath_root$fastcgi_path_info;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         <% else %>
         fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         <% end %>
         fastcgi_param PATH_INFO $fastcgi_path_info;
         <% if @params['forwarded_proto_https_emulation'] %>
