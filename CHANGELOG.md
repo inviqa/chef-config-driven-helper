@@ -1,3 +1,9 @@
+## 3.2.0 (30 Oct 2018)
+
+NEW FEATURES:
+
+  * #96 Send the correct directory name as DOCUMENT_ROOT and correct script name as SCRIPT_FILENAME. Allow sending through additional fastcgi parameters like fastcgi_buffers.
+
 ## 3.1.1 (17 Aug 2018)
 
 CHANGES:
