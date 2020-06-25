@@ -11,7 +11,7 @@ end
 group :test do
   gem 'chefspec', '~> 4.4'
   gem 'foodcritic', '~> 6.0'
-  gem 'nokogiri', '~> 1.6.3.1'
+  gem 'nokogiri', '~> 1.10.8'
   gem 'rubocop', '~> 0.39.0'
 end
 
