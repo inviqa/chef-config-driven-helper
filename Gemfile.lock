@@ -170,7 +170,7 @@ GEM
     polyglot (0.3.5)
     powerpack (0.1.1)
     proxifier (1.0.3)
-    rack (1.6.4)
+    rack (2.2.3)
     rainbow (2.1.0)
     rake (10.5.0)
     retryable (2.0.3)
