@@ -109,7 +109,7 @@ GEM
     hitimes (1.2.4)
     httpclient (2.7.2)
     ipaddress (0.8.3)
-    json (1.8.3)
+    json (2.3.1)
     kitchen-vagrant (0.20.0)
       test-kitchen (~> 1.4)
     libyajl2 (1.2.0)
